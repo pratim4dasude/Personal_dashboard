@@ -17,7 +17,7 @@ export default function Home() {
             Pratim Dasude{" "}
             <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
               working on the models
-              help to work it out  sdvsdvdsvsdvsdvsd sdvsdvsdvs sdvsdvsd
+              help to work it out adadadasdadadasdas
             </code>
             .
           </li>
