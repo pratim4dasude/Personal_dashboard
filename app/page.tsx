@@ -22,7 +22,7 @@ export default function Home() {
             .
           </li>
           <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
+            Save and see your changes instantly save for later work.
           </li>
         </ol>
 
@@ -48,7 +48,7 @@ export default function Home() {
             target="_blank"
             rel="noopener noreferrer"
           >
-            Read our docs
+            Read our docs read docks 
           </a>
         </div>
       </main>
