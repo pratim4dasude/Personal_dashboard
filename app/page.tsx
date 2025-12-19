@@ -16,7 +16,7 @@ export default function Home() {
           <li className="mb-2 tracking-[-.01em]">
             Pratim Dasude{" "}
             <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              working on the modelssdvsdvsdv
+              working on the
               help to work it out 
             </code>
             .
