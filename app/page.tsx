@@ -1,236 +1,329 @@
-import Image from "next/image";
-
 export default function Home() {
+  const skills = [
+    "Python",
+    "PyTorch",
+    "TensorFlow",
+    "FastAPI",
+    "Next.js",
+    "React",
+    "LangChain",
+    "Docker",
+    "AWS SageMaker",
+    "NVIDIA NIM",
+    "Computer Vision",
+    "Generative AI",
+    "LLMs",
+    "RAG",
+  ];
+
+  const projects = [
+    {
+      title: "EchoSeek",
+      description:
+        "A multimodal RAG-based product discovery platform built with Llama 3.1, NV-Embed-QA, LangChain, FastAPI, Docker, and Next.js for intelligent real-time retrieval.",
+    },
+    {
+      title: "White Balance Regression Model",
+      description:
+        "A computer vision model using EfficientNetV2-S to estimate color temperature and tint, improving automatic white balance correction accuracy.",
+    },
+    {
+      title: "Order Amount Prediction",
+      description:
+        "A forecasting system using Random Forest and XGBoost with feature engineering and hyperparameter tuning for stronger business prediction accuracy.",
+    },
+  ];
+
   return (
     <main
       style={{
         minHeight: "100vh",
-        backgroundColor: "#f5f7fa",
-        color: "#111827",
+        background:
+          "linear-gradient(to bottom right, #0f172a, #111827, #1e293b)",
+        color: "#f8fafc",
         fontFamily: "Arial, sans-serif",
         padding: "40px 20px",
       }}
     >
       <div
         style={{
-          maxWidth: "900px",
+          maxWidth: "1100px",
           margin: "0 auto",
         }}
       >
         <section
           style={{
             textAlign: "center",
-            marginBottom: "50px",
+            padding: "60px 20px 40px",
           }}
         >
-          <h1
+          <p
             style={{
-              fontSize: "3rem",
-              marginBottom: "10px",
+              color: "#93c5fd",
+              letterSpacing: "2px",
+              textTransform: "uppercase",
+              fontSize: "0.9rem",
+              marginBottom: "12px",
             }}
           >
-            Pratim Mangaldas Dasude
+            Machine Learning Engineer
+          </p>
+
+          <h1
+            style={{
+              fontSize: "3.5rem",
+              margin: "0 0 16px",
+              lineHeight: "1.1",
+            }}
+          >
+            Pratim Dasude
           </h1>
 
           <p
             style={{
+              maxWidth: "750px",
+              margin: "0 auto",
               fontSize: "1.15rem",
-              color: "#4b5563",
-              marginBottom: "10px",
-            }}
-          >
-            Machine Learning Engineer building AI, Computer Vision, Generative AI, and Multimodal systems
-          </p>
-
-          <p
-            style={{
-              fontSize: "1rem",
-              color: "#6b7280",
-              lineHeight: "1.7",
-            }}
-          >
-            Bengaluru, Karnataka | +91 8582994074 | pratim4dasude@gmail.com
-          </p>
-        </section>
-
-        <section
-          style={{
-            backgroundColor: "#ffffff",
-            padding: "30px",
-            borderRadius: "16px",
-            boxShadow: "0 4px 20px rgba(0,0,0,0.08)",
-            marginBottom: "30px",
-          }}
-        >
-          <h2 style={{ marginBottom: "15px", fontSize: "1.8rem" }}>About Me</h2>
-          <p
-            style={{
               lineHeight: "1.8",
-              color: "#374151",
-              fontSize: "1rem",
+              color: "#cbd5e1",
             }}
           >
-            I am a Machine Learning Engineer with experience in building and fine tuning large scale vision language
-            models, diffusion models, and multimodal AI systems. I work with PyTorch, FastAPI, Next.js, LangChain,
-            AWS SageMaker, NVIDIA NIM, and modern deep learning workflows to create scalable real world AI products.
+            I build AI systems across computer vision, generative AI, multimodal
+            learning, and retrieval-based applications with a focus on real-world
+            deployment and scalable ML workflows.
           </p>
-        </section>
 
-        <section
-          style={{
-            backgroundColor: "#ffffff",
-            padding: "30px",
-            borderRadius: "16px",
-            boxShadow: "0 4px 20px rgba(0,0,0,0.08)",
-            marginBottom: "30px",
-          }}
-        >
-          <h2 style={{ marginBottom: "20px", fontSize: "1.8rem" }}>Experience</h2>
-
-          <div style={{ marginBottom: "25px" }}>
-            <h3 style={{ marginBottom: "5px" }}>
-              AiLusion — Merosa Technologies Pvt. Ltd
-            </h3>
-            <p style={{ color: "#6b7280", marginBottom: "10px" }}>
-              Machine Learning Engineer | Jan 2025 - Current | Bengaluru, Karnataka
-            </p>
-            <p style={{ lineHeight: "1.8", color: "#374151" }}>
-              Developed and fine tuned large scale VLMs and diffusion models using PyTorch, Flux Dev, and CLIP style
-              embeddings to improve multimodal alignment, visual reasoning, and photorealistic garment body draping.
-              Built scalable training and evaluation pipelines with mixed precision, distributed workflows, and
-              automated ablations, reducing training latency by 30 percent and improving downstream quality across
-              100 plus SKUs. Applied PEFT methods such as LoRA, QLoRA, and DreamBooth for domain specific adaptation.
-            </p>
-          </div>
-
-          <div>
-            <h3 style={{ marginBottom: "5px" }}>Highradius Technologies</h3>
-            <p style={{ color: "#6b7280", marginBottom: "10px" }}>
-              Data Science Intern | July 2023 - November 2023 | Bhubaneswar, Odisha
-            </p>
-            <p style={{ lineHeight: "1.8", color: "#374151" }}>
-              Built and optimized a deduction classification model using XGBoost and LightGBM. Improved validity
-              assessment accuracy by 20 percent through feature engineering and hyperparameter tuning while reducing
-              processing time by 15 percent. Also automated monitoring and drift detection pipelines, reducing
-              mispredictions by 30 percent for 100 plus clients.
-            </p>
+          <div
+            style={{
+              marginTop: "28px",
+              display: "flex",
+              gap: "12px",
+              justifyContent: "center",
+              flexWrap: "wrap",
+            }}
+          >
+            <span
+              style={{
+                padding: "10px 16px",
+                borderRadius: "999px",
+                background: "rgba(59,130,246,0.15)",
+                border: "1px solid rgba(147,197,253,0.25)",
+                color: "#bfdbfe",
+              }}
+            >
+              Bengaluru, Karnataka
+            </span>
+            <span
+              style={{
+                padding: "10px 16px",
+                borderRadius: "999px",
+                background: "rgba(59,130,246,0.15)",
+                border: "1px solid rgba(147,197,253,0.25)",
+                color: "#bfdbfe",
+              }}
+            >
+              ML • CV • GenAI • RAG
+            </span>
           </div>
         </section>
 
         <section
           style={{
-            backgroundColor: "#ffffff",
-            padding: "30px",
-            borderRadius: "16px",
-            boxShadow: "0 4px 20px rgba(0,0,0,0.08)",
-            marginBottom: "30px",
+            display: "grid",
+            gridTemplateColumns: "1.2fr 0.8fr",
+            gap: "24px",
+            marginTop: "30px",
           }}
         >
-          <h2 style={{ marginBottom: "20px", fontSize: "1.8rem" }}>Projects</h2>
-
-          <div style={{ marginBottom: "20px" }}>
-            <h3 style={{ marginBottom: "8px" }}>EchoSeek</h3>
-            <p style={{ lineHeight: "1.8", color: "#374151" }}>
-              Built a multimodal RAG based product discovery platform using Llama 3.1, NV Embed QA, LangChain,
-              NVIDIA NIM, AWS SageMaker, FastAPI, Docker, and Next.js to enable intelligent real time product
-              retrieval and context aware recommendations.
+          <div
+            style={{
+              background: "rgba(255,255,255,0.06)",
+              border: "1px solid rgba(255,255,255,0.08)",
+              borderRadius: "24px",
+              padding: "28px",
+              backdropFilter: "blur(8px)",
+            }}
+          >
+            <h2 style={{ fontSize: "1.6rem", marginBottom: "14px" }}>
+              About Me
+            </h2>
+            <p style={{ color: "#cbd5e1", lineHeight: "1.9" }}>
+              I am a Machine Learning Engineer currently working on large-scale
+              vision language models, diffusion models, multimodal pipelines,
+              and production-focused AI systems. My work includes training,
+              evaluation, fine-tuning, and deployment of deep learning models
+              using tools like PyTorch, FastAPI, LangChain, AWS SageMaker, and
+              Next.js.
             </p>
           </div>
 
-          <div style={{ marginBottom: "20px" }}>
-            <h3 style={{ marginBottom: "8px" }}>White Balance Regression Model</h3>
-            <p style={{ lineHeight: "1.8", color: "#374151" }}>
-              Built a computer vision regression model using EfficientNetV2 S to estimate color temperature and tint
-              from images, improving automatic white balance correction accuracy by 25 to 30 percent through multi
-              stage fine tuning.
+          <div
+            style={{
+              background: "rgba(255,255,255,0.06)",
+              border: "1px solid rgba(255,255,255,0.08)",
+              borderRadius: "24px",
+              padding: "28px",
+              backdropFilter: "blur(8px)",
+            }}
+          >
+            <h2 style={{ fontSize: "1.6rem", marginBottom: "14px" }}>
+              Contact
+            </h2>
+            <p style={{ color: "#cbd5e1", lineHeight: "1.9", margin: 0 }}>
+              pratim4dasude@gmail.com
             </p>
-          </div>
 
-          <div>
-            <h3 style={{ marginBottom: "8px" }}>Order Amount Prediction</h3>
-            <p style={{ lineHeight: "1.8", color: "#374151" }}>
-              Worked on a time series and ensemble learning based prediction system using Random Forest and XGBoost,
-              achieving 75 percent prediction accuracy and reducing mean absolute error by 20 percent with feature
-              engineering and tuning.
+            <p style={{ color: "#cbd5e1", lineHeight: "1.9", margin: 0 }}>
+              linkedin/pratim-dasude
+            </p>
+            <p style={{ color: "#cbd5e1", lineHeight: "1.9", margin: 0 }}>
+              github/pratim4dasude
             </p>
           </div>
         </section>
 
-        <section
-          style={{
-            backgroundColor: "#ffffff",
-            padding: "30px",
-            borderRadius: "16px",
-            boxShadow: "0 4px 20px rgba(0,0,0,0.08)",
-            marginBottom: "30px",
-          }}
-        >
-          <h2 style={{ marginBottom: "20px", fontSize: "1.8rem" }}>Skills</h2>
+        <section style={{ marginTop: "28px" }}>
+          <div
+            style={{
+              background: "rgba(255,255,255,0.06)",
+              border: "1px solid rgba(255,255,255,0.08)",
+              borderRadius: "24px",
+              padding: "28px",
+            }}
+          >
+            <h2 style={{ fontSize: "1.8rem", marginBottom: "20px" }}>
+              Experience
+            </h2>
 
-          <p style={{ lineHeight: "1.9", color: "#374151", marginBottom: "12px" }}>
-            <strong>Languages:</strong> Python, Java, JavaScript, TypeScript, C/C++, HTML/CSS, SQL, MongoDB, Bash
-          </p>
+            <div style={{ marginBottom: "28px" }}>
+              <h3 style={{ marginBottom: "6px", fontSize: "1.2rem" }}>
+                AiLusion — Merosa Technologies Pvt. Ltd
+              </h3>
+              <p style={{ color: "#93c5fd", marginBottom: "10px" }}>
+                Machine Learning Engineer • Jan 2025 - Current
+              </p>
+              <p style={{ color: "#cbd5e1", lineHeight: "1.9" }}>
+                Developed and fine-tuned large-scale VLMs and diffusion models
+                using PyTorch, Flux-Dev, and CLIP-style embeddings. Built
+                scalable training and evaluation pipelines with mixed precision,
+                distributed workflows, and automated ablations, reducing
+                training latency and improving retrieval and draping quality
+                across 100+ SKUs. Worked with LoRA, QLoRA, and DreamBooth for
+                domain-specific model adaptation.
+              </p>
+            </div>
 
-          <p style={{ lineHeight: "1.9", color: "#374151", marginBottom: "12px" }}>
-            <strong>Technologies:</strong> TensorFlow, PyTorch, Keras, scikit learn, FastAPI, React.js, Next.js,
-            Docker, FAISS, LangChain
-          </p>
-
-          <p style={{ lineHeight: "1.9", color: "#374151", marginBottom: "12px" }}>
-            <strong>Concepts:</strong> AI, ML, Neural Networks, Deep Learning, Computer Vision, Generative AI, LLMs,
-            RAG, Agentic AI, MCP, LoRA Fine Tuning, Hyperparameter Tuning, Feature Engineering, Model Training and
-            Evaluation
-          </p>
-
-          <p style={{ lineHeight: "1.9", color: "#374151" }}>
-            <strong>Tools:</strong> ComfyUI, Fooocus, Hugging Face Transformers, Hugging Face Diffusers, Git, Jira,
-            Google Colab, Firebase, MS Excel, Kaggle Datasets, AWS SageMaker, NVIDIA NIM, Postman
-          </p>
-        </section>
-
-        <section
-          style={{
-            backgroundColor: "#ffffff",
-            padding: "30px",
-            borderRadius: "16px",
-            boxShadow: "0 4px 20px rgba(0,0,0,0.08)",
-            marginBottom: "30px",
-          }}
-        >
-          <h2 style={{ marginBottom: "20px", fontSize: "1.8rem" }}>Education</h2>
-
-          <div style={{ marginBottom: "15px" }}>
-            <h3 style={{ marginBottom: "5px" }}>Kalinga Institute of Industrial Technologies</h3>
-            <p style={{ color: "#374151" }}>
-              B.Tech in Computer Science and Engineering | 2020 - 2024 | CGPA: 9.15
-            </p>
-          </div>
-
-          <div style={{ marginBottom: "15px" }}>
-            <h3 style={{ marginBottom: "5px" }}>Julien Day School, Kalyani</h3>
-            <p style={{ color: "#374151" }}>
-              ISC Board | 2017 - 2019 | Percentage: 84.00
-            </p>
-          </div>
-
-          <div>
-            <h3 style={{ marginBottom: "5px" }}>ICSE Board</h3>
-            <p style={{ color: "#374151" }}>
-              2015 - 2017 | Percentage: 81.83
-            </p>
+            <div>
+              <h3 style={{ marginBottom: "6px", fontSize: "1.2rem" }}>
+                Highradius Technologies
+              </h3>
+              <p style={{ color: "#93c5fd", marginBottom: "10px" }}>
+                Data Science Intern • July 2023 - November 2023
+              </p>
+              <p style={{ color: "#cbd5e1", lineHeight: "1.9" }}>
+                Built and optimized a deduction classification model using
+                XGBoost and LightGBM. Improved accuracy through feature
+                engineering and hyperparameter tuning, and automated monitoring
+                and drift detection pipelines to reduce mispredictions across
+                large-scale workflows.
+              </p>
+            </div>
           </div>
         </section>
 
-        <section
-          style={{
-            textAlign: "center",
-            color: "#6b7280",
-            fontSize: "0.95rem",
-            paddingBottom: "20px",
-          }}
-        >
-          <p>LinkedIn: linkedin/pratim-dasude</p>
-          <p>GitHub: github/pratim4dasude</p>
+        <section style={{ marginTop: "28px" }}>
+          <h2 style={{ fontSize: "1.8rem", marginBottom: "18px" }}>Projects</h2>
+
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
+              gap: "20px",
+            }}
+          >
+            {projects.map((project) => (
+              <div
+                key={project.title}
+                style={{
+                  background: "rgba(255,255,255,0.06)",
+                  border: "1px solid rgba(255,255,255,0.08)",
+                  borderRadius: "20px",
+                  padding: "22px",
+                }}
+              >
+                <h3 style={{ marginBottom: "10px", fontSize: "1.15rem" }}>
+                  {project.title}
+                </h3>
+                <p style={{ color: "#cbd5e1", lineHeight: "1.8" }}>
+                  {project.description}
+                </p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section style={{ marginTop: "28px" }}>
+          <div
+            style={{
+              background: "rgba(255,255,255,0.06)",
+              border: "1px solid rgba(255,255,255,0.08)",
+              borderRadius: "24px",
+              padding: "28px",
+            }}
+          >
+            <h2 style={{ fontSize: "1.8rem", marginBottom: "18px" }}>Skills</h2>
+
+            <div
+              style={{
+                display: "flex",
+                flexWrap: "wrap",
+                gap: "12px",
+              }}
+            >
+              {skills.map((skill) => (
+                <span
+                  key={skill}
+                  style={{
+                    padding: "10px 14px",
+                    borderRadius: "999px",
+                    background: "rgba(59,130,246,0.12)",
+                    border: "1px solid rgba(147,197,253,0.18)",
+                    color: "#dbeafe",
+                    fontSize: "0.95rem",
+                  }}
+                >
+                  {skill}
+                </span>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section style={{ marginTop: "28px", marginBottom: "30px" }}>
+          <div
+            style={{
+              background: "rgba(255,255,255,0.06)",
+              border: "1px solid rgba(255,255,255,0.08)",
+              borderRadius: "24px",
+              padding: "28px",
+            }}
+          >
+            <h2 style={{ fontSize: "1.8rem", marginBottom: "18px" }}>
+              Education
+            </h2>
+            <p style={{ color: "#cbd5e1", lineHeight: "1.9", marginBottom: "10px" }}>
+              <strong style={{ color: "#f8fafc" }}>
+                Kalinga Institute of Industrial Technologies
+              </strong>
+              <br />
+              B.Tech in Computer Science and Engineering • 2020 - 2024 • CGPA:
+              9.15
+            </p>
+            <p style={{ color: "#cbd5e1", lineHeight: "1.9", margin: 0 }}>
+              Strong academic background with focus on AI, machine learning,
+              deep learning, and software systems.
+            </p>
+          </div>
         </section>
       </div>
     </main>
