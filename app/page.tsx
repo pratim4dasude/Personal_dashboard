@@ -152,8 +152,8 @@ export default function Home() {
               vision language models, diffusion models, multimodal pipelines,
               and production-focused AI systems. My work includes training,
               evaluation, fine-tuning, and deployment of deep learning models
-              using tools like PyTorch, FastAPI, LangChain, AWS SageMaker, and
-              Next.js.
+              using tools like PyTorch, FastAPI, LangChain, AWS SageMaker,
+              Next.js, Pinecone, coding knowledege .
             </p>
           </div>
 
@@ -321,7 +321,7 @@ export default function Home() {
             </p>
             <p style={{ color: "#cbd5e1", lineHeight: "1.9", margin: 0 }}>
               Strong academic background with focus on AI, machine learning,
-              deep learning, and software systems also made up for resarch and workings .
+              deep learning, and software systems .
             </p>
           </div>
         </section>
