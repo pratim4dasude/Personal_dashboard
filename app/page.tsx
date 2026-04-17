@@ -321,7 +321,7 @@ export default function Home() {
             </p>
             <p style={{ color: "#cbd5e1", lineHeight: "1.9", margin: 0 }}>
               Strong academic background with focus on AI, machine learning,
-              deep learning, and software systems.
+              deep learning, and software systems also made up for resarch and workings .
             </p>
           </div>
         </section>
