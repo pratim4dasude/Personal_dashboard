@@ -208,8 +208,7 @@ export default function Home() {
                 scalable training and evaluation pipelines with mixed precision,
                 distributed workflows, and automated ablations, reducing
                 training latency and improving retrieval and draping quality
-                across 100+ SKUs. Worked with LoRA, QLoRA, and DreamBooth for
-                domain-specific model adaptation.
+                across 100+ SKUs. 
               </p>
             </div>
 
