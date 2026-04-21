@@ -208,7 +208,8 @@ export default function Home() {
                 scalable training and evaluation pipelines with mixed precision,
                 distributed workflows, and automated ablations, reducing
                 training latency and improving retrieval and draping quality
-                across 100+ SKUs. 
+                across 100+ SKUs. Worked with LoRA, QLoRA, and DreamBooth for
+                domain-specific model adaptation.
               </p>
             </div>
 
@@ -222,9 +223,7 @@ export default function Home() {
               <p style={{ color: "#cbd5e1", lineHeight: "1.9" }}>
                 Built and optimized a deduction classification model using
                 XGBoost and LightGBM. Improved accuracy through feature
-                engineering and hyperparameter tuning, and automated monitoring
-                and drift detection pipelines to reduce mispredictions across
-                large-scale workflows.
+                engineering and hyperparameter tuning, 
               </p>
             </div>
           </div>
