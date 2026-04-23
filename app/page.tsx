@@ -223,10 +223,7 @@ export default function Home() {
               <p style={{ color: "#cbd5e1", lineHeight: "1.9" }}>
                 Built and optimized a deduction classification model using
                 XGBoost and LightGBM. Improved accuracy through feature
-                engineering and hyperparameter tuning, and automated monitoring
-                and drift detection pipelines to reduce mispredictions across
-                large-scale workflows.
-              </p>
+                engineering and 
             </div>
           </div>
         </section>
