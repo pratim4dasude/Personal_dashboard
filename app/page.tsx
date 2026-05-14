@@ -119,11 +119,11 @@ export default function Home() {
                 borderRadius: "999px",
                 background: "rgba(59,130,246,0.15)",
                 border: "1px solid rgba(147,197,253,0.25)",
-                color:'#ffff'
+                color: "#bfdbfe",
               }}
-              // color: "#bfdbfe",
+              // color: 
             >
-              ML • CV • GenAI • RAG
+              ML • CV • GenAI • RAG • LLM • Backend
             </span>
           </div>
         </section>
