@@ -151,7 +151,9 @@ export default function Home() {
               I am a Machine Learning Engineer currently working on large-scale
               vision language models, diffusion models, multimodal pipelines,
               and production-focused AI systems. My work includes training,
-              
+              evaluation, fine-tuning, and deployment of deep learning models
+              using tools like PyTorch, FastAPI, LangChain, AWS SageMaker,
+              Next.js, Pinecone, coding knowledege .
             </p>
           </div>
 
