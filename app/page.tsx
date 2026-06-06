@@ -204,13 +204,7 @@ export default function Home() {
                 Machine Learning Engineer • Jan 2025 - Current
               </p>
               <p style={{ color: "#cbd5e1", lineHeight: "1.9" }}>
-                Developed and fine-tuned large-scale VLMs and diffusion models
-                using PyTorch, Flux-Dev, and CLIP-style embeddings. Built
-                scalable training and evaluation pipelines with mixed precision,
-                distributed workflows, and automated ablations, reducing
-                training latency and improving retrieval and draping quality
-                across 100+ SKUs. Worked with LoRA, QLoRA, and DreamBooth for
-                domain-specific model adaptation.
+                Developed and 
               </p>
             </div>
 
