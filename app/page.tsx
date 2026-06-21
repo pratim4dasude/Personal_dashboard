@@ -317,7 +317,8 @@ export default function Home() {
                 Kalinga Institute of Industrial Technologies
               </strong>
               <br />
-             
+              B.Tech in Computer Science and Engineering • 2020 - 2024 • CGPA:
+              9.15
             </p>
             <p style={{ color: "#cbd5e1", lineHeight: "1.9", margin: 0 }}>
               Strong academic background with focus on AI, machine learning,
