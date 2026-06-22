@@ -121,7 +121,7 @@ export default function Home() {
                 border: "1px solid rgba(147,197,253,0.25)",
                 color: "#bfdbfe",
               }}
-              // color: 
+            // color: 
             >
               ML • CV • GenAI • RAG • LLM • Backend
             </span>
@@ -206,7 +206,11 @@ export default function Home() {
               <p style={{ color: "#cbd5e1", lineHeight: "1.9" }}>
                 Developed and fine-tuned large-scale VLMs and diffusion models
                 using PyTorch, Flux-Dev, and CLIP-style embeddings. Built
-                
+                scalable training and evaluation pipelines with mixed precision,
+                distributed workflows, and automated ablations, reducing
+                training latency and improving retrieval and draping quality
+                across 100+ SKUs. Worked with LoRA, QLoRA, and DreamBooth for
+                domain-specific model adaptation.
               </p>
             </div>
 
@@ -222,7 +226,7 @@ export default function Home() {
                 engineering and hyperparameter tuning, and automated monitoring
                 and drift detection pipelines to reduce mispredictions across
                 large-scale workflows.
-                
+
               </p>
             </div>
           </div>
