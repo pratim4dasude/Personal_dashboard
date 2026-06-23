@@ -89,8 +89,7 @@ export default function Home() {
             }}
           >
             I build AI systems across computer vision, generative AI, multimodal
-            learning, and retrieval-based applications with a focus on real-world
-            deployment and scalable ML workflows.
+            
           </p>
 
           <div
