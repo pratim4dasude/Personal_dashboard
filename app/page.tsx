@@ -6,7 +6,14 @@ export default function Home() {
     "FastAPI",
     "Next.js",
     "React",
-  
+    "LangChain",
+    "Docker",
+    "AWS SageMaker",
+    "NVIDIA NIM",
+    "Computer Vision",
+    "Generative AI",
+    "LLMs",
+    "RAG",
   ];
 
   const projects = [
