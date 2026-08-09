@@ -88,7 +88,10 @@ export default function Home() {
               color: "#cbd5e1",
             }}
           >
-          
+            I build AI systems across computer vision, generative AI, multimodal
+            learning, and retrieval-based applications with a focus on real-world
+            deployment and scalable ML workflows.
+          </p>
 
           <div
             style={{
@@ -146,12 +149,7 @@ export default function Home() {
               About Me
             </h2>
             <p style={{ color: "#cbd5e1", lineHeight: "1.9" }}>
-              I am a Machine Learning Engineer currently working on large-scale
-              vision language models, diffusion models, multimodal pipelines,
-              and production-focused AI systems. My work includes training,
-              evaluation, fine-tuning, and deployment of deep learning models
-              using tools like PyTorch, FastAPI, LangChain, AWS SageMaker,
-              Next.js, Pinecone, coding knowledege .
+              
             </p>
           </div>
 
