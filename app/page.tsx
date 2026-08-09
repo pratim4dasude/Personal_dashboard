@@ -88,10 +88,7 @@ export default function Home() {
               color: "#cbd5e1",
             }}
           >
-            I build AI systems across computer vision, generative AI, multimodal
-            learning, and retrieval-based applications with a focus on real-world
-            deployment and scalable ML workflows.
-          </p>
+          
 
           <div
             style={{
