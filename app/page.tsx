@@ -5,15 +5,7 @@ export default function Home() {
     "TensorFlow",
     "FastAPI",
     "Next.js",
-    "React",
-    "LangChain",
-    "Docker",
-    "AWS SageMaker",
-    "NVIDIA NIM",
-    "Computer Vision",
-    "Generative AI",
-    "LLMs",
-    "RAG",
+  
   ];
 
   const projects = [
