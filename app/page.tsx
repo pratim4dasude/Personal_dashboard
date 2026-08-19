@@ -184,7 +184,9 @@ export default function Home() {
               About
             </p>
             <h3 className="mt-4 text-2xl font-semibold text-white">Engineering with an ML product mindset</h3>
-
+            <p className="mt-4 text-sm leading-7 text-stone-300 sm:text-base">
+              My work sits between model experimentation and shipping systems that other teams can depend on. That includes training loops, evaluation pipelines, retrieval quality, backend APIs, and the product surface that exposes model capabilities cleanly.
+            </p>
           </div>
 
           <div className="grid gap-4 sm:grid-cols-3">
