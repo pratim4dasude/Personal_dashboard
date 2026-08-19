@@ -293,15 +293,7 @@ export default function Home() {
             <h3 className="mt-4 text-2xl font-semibold text-white">
               Kalinga Institute of Industrial Technology
             </h3>
-            <p className="mt-3 text-sm leading-7 text-stone-300 sm:text-base">
-              B.Tech in Computer Science and Engineering, 2020 - 2024
-            </p>
-            <p className="mt-2 text-sm leading-7 text-stone-300 sm:text-base">
-              CGPA: 9.15
-            </p>
-            <p className="mt-4 text-sm leading-7 text-stone-300 sm:text-base">
-              Strong academic grounding in machine learning, deep learning, computer vision, and software systems.
-            </p>
+      
           </div>
         </section>
       </div>
