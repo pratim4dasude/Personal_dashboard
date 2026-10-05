@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
-import { Card } from "../components/Card";
-import PageHeader from "../components/PageHeader";
+import BBox from "../components/ui/BBox";
+import BeforeAfter from "../components/ui/BeforeAfter";
+import PageHero from "../components/pages/PageHero";
 import Reveal from "../components/Reveal";
-import SectionLabel from "../components/SectionLabel";
-import Tag from "../components/Tag";
+import Publications from "../components/pages/Publications";
+import Shell from "../components/pages/Shell";
 import { research } from "../research";
 
 export const metadata: Metadata = {
@@ -11,57 +12,112 @@ export const metadata: Metadata = {
   description: "Applied research and experiments in computer vision, generative AI and forecasting.",
 };
 
+const samples = [1, 2, 3, 4, 5, 6];
+
 export default function ResearchPage() {
   return (
-    <main id="main" className="mx-auto w-full max-w-5xl px-6 py-10 sm:px-8">
-      <PageHeader
+    <Shell>
+      <PageHero
+        index="02"
         label="Research"
-        title="Research and experiments"
-        intro="Applied experiments in vision, generative models and forecasting. Each one links to its open code."
-      />
+        intro="Applied experiments in vision, generative models and forecasting, plus peer-reviewed papers. Experiments link to open code."
+      >
+        Experiments that <span className="font-emph">ask</span> a question.
+      </PageHero>
 
-      <div className="space-y-6">
-        {research.map((item, i) => (
-          <Reveal key={item.slug} delay={i * 60}>
-            <Card>
-              <p className="font-mono text-xs uppercase tracking-[0.25em] text-emerald-200/70">{item.area}</p>
-              <h2 className="mt-3 text-2xl font-semibold text-white">{item.title}</h2>
-              <p className="mt-3 leading-8 text-stone-300">{item.summary}</p>
+      <div>
+        {research.map((item, i) => {
+          const isDino = item.slug === "grounded-dino-sam-finetuning";
+          return (
+            <Reveal key={item.slug}>
+              <article className="border-b border-line py-14 sm:py-20">
+                <div className="grid gap-8 lg:grid-cols-12 lg:gap-10">
+                  <div className="lg:col-span-4">
+                    <p className="label flex gap-4">
+                      <span className="text-accent">{String(i + 1).padStart(2, "0")}</span>
+                      <span>{item.area}</span>
+                    </p>
+                  </div>
+                  <div className="lg:col-span-8">
+                    <h2 className="font-display text-[clamp(2rem,4.6vw,4.25rem)]">{item.title}</h2>
+                    <p className="mt-6 max-w-2xl text-lg leading-8 text-fg/80">{item.summary}</p>
+                  </div>
+                </div>
 
-              <div className="mt-6 grid gap-6 md:grid-cols-2">
-                <div>
-                  <SectionLabel>Question</SectionLabel>
-                  <p className="mt-3 text-sm leading-7 text-stone-300">{item.question}</p>
+                <div className="mt-12 grid gap-10 lg:grid-cols-12 lg:gap-10">
+                  <div className="lg:col-span-4 lg:col-start-5">
+                    <p className="label border-t border-line pt-4">Question</p>
+                    <p className="font-emph mt-4 text-2xl leading-snug text-fg/90">{item.question}</p>
+                  </div>
+                  <div className="lg:col-span-4">
+                    <p className="label border-t border-line pt-4">Approach</p>
+                    <ol className="mt-2">
+                      {item.method.map((m, k) => (
+                        <li
+                          key={m}
+                          className="grid grid-cols-[2rem_1fr] border-b border-line py-3 text-[15px] leading-6 text-muted last:border-b-0"
+                        >
+                          <span className="font-mono text-xs leading-6 text-muted/70">{k + 1}</span>
+                          {m}
+                        </li>
+                      ))}
+                    </ol>
+                  </div>
                 </div>
-                <div>
-                  <SectionLabel>Approach</SectionLabel>
-                  <ul className="mt-3 list-disc space-y-1 pl-5 text-sm text-stone-300 marker:text-emerald-300/60">
-                    {item.method.map((m) => (
-                      <li key={m}>{m}</li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
 
-              <div className="mt-6 flex flex-wrap items-center justify-between gap-3">
-                <div className="flex flex-wrap gap-2">
-                  {item.tags.map((t) => (
-                    <Tag key={t}>{t}</Tag>
-                  ))}
+                {isDino && (
+                  <div className="mt-14 grid gap-10 lg:grid-cols-12 lg:gap-10">
+                    <div className="lg:col-span-5 lg:col-start-5">
+                      <BBox label="crack" className="mt-6">
+                        <BeforeAfter
+                          before="/vision/crack-1-input.jpg"
+                          after="/vision/crack-1-overlay.jpg"
+                          beforeLabel="Input"
+                          afterLabel="Box + mask"
+                          alt="Wall crack segmentation by fine-tuned Grounded DINO and SAM"
+                        />
+                      </BBox>
+                      <p className="label mt-4">Drag to compare. Real pipeline output.</p>
+                    </div>
+                    <div className="lg:col-span-3">
+                      <p className="label border-t border-line pt-4">More outputs</p>
+                      <div className="mt-4 grid grid-cols-3 gap-2">
+                        {samples.map((n) => (
+                          // eslint-disable-next-line @next/next/no-img-element
+                          <img
+                            key={n}
+                            src={`/vision/crack-${n}-overlay.jpg`}
+                            alt={`${n <= 3 ? "Wall crack" : "Drywall seam"} segmentation output ${n}`}
+                            loading="lazy"
+                            className="aspect-square w-full border border-line object-cover"
+                          />
+                        ))}
+                      </div>
+                      <p className="label mt-3">Cracks 1-3, drywall seams 4-6</p>
+                    </div>
+                  </div>
+                )}
+
+                <div className="mt-12 grid gap-4 lg:grid-cols-12 lg:gap-10">
+                  <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between lg:col-span-8 lg:col-start-5">
+                    <p className="font-mono text-xs leading-6 text-muted">{item.tags.join(", ")}</p>
+                    <a
+                      href={item.repo}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="label text-fg transition-colors hover:text-accent"
+                    >
+                      View code <span aria-hidden>&#8599;</span>
+                    </a>
+                  </div>
                 </div>
-                <a
-                  href={item.repo}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-sm font-medium text-emerald-200 transition hover:text-white"
-                >
-                  View code on GitHub &rarr;
-                </a>
-              </div>
-            </Card>
-          </Reveal>
-        ))}
+              </article>
+            </Reveal>
+          );
+        })}
       </div>
-    </main>
+
+      <Publications />
+    </Shell>
   );
 }
