@@ -61,14 +61,6 @@ export const featuredRepos: Repo[] = [
     tags: ["Multi-agent", "FastAPI", "Streaming"],
   },
   {
-    name: "Finance_AI_Assistant",
-    description:
-      "AI-powered financial assistant microservice with multi-agent routing, safety checks, portfolio insights, and real-time streaming responses.",
-    language: "Python",
-    url: "https://github.com/pratim4dasude/Finance_AI_Assistant",
-    tags: ["Multi-agent", "Safety", "Streaming"],
-  },
-  {
     name: "PDReader",
     description: "Turn PDFs into searchable, conversational knowledge using AI.",
     language: "Python",
@@ -76,12 +68,18 @@ export const featuredRepos: Repo[] = [
     tags: ["RAG", "PDF"],
   },
   {
-    name: "CustomerChat",
-    description:
-      "RAG-powered IT chatbot using Pinecone + GPT-4 with semantic search, session management, and sentiment analysis.",
+    name: "oRobotics",
+    description: "Prompt-based crack and drywall segmentation using fine-tuned Grounding DINO and SAM.",
+    language: "Jupyter Notebook",
+    url: "https://github.com/pratim4dasude/oRobotics",
+    tags: ["Segmentation", "Grounding DINO", "SAM"],
+  },
+  {
+    name: "EchoSeek",
+    description: "AI-driven fashion discovery platform enabling smart outfit search through natural language and visual queries.",
     language: "TypeScript",
-    url: "https://github.com/pratim4dasude/CustomerChat",
-    tags: ["RAG", "Pinecone", "GPT-4"],
+    url: "https://github.com/pratim4dasude/EchoSeek",
+    tags: ["Multimodal", "Next.js", "Search"],
   },
   {
     name: "pipline_flux_fill_controlnet_Inpaint",

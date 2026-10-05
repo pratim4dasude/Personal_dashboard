@@ -1,3 +1,5 @@
+import { projects } from "./projects";
+
 export const highlights = [
   "Multimodal AI systems",
   "Computer vision pipelines",
@@ -26,7 +28,7 @@ export const focusAreas = [
 export const metrics = [
   { value: "2+", label: "years building ML systems" },
   { value: "100+", label: "SKUs improved in model workflows" },
-  { value: "3", label: "flagship projects showcased" },
+  { value: String(projects.length), label: "selected projects, written up" },
 ];
 
 export type ExperienceItem = {
