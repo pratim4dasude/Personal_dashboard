@@ -1,309 +1,292 @@
-const highlights = [
-  "Multimodal AI systems",
-  "Computer vision pipelines",
-  "RAG and LLM applications",
-  "Production ML deployment",
-];
+import Link from "next/link";
+import { Card, CardLink } from "./components/Card";
+import Marquee from "./components/Marquee";
+import Reveal from "./components/Reveal";
+import SectionLabel from "./components/SectionLabel";
+import Tag from "./components/Tag";
+import { education, experience, focusAreas, highlights, metrics, profile, skillGroups } from "./data";
+import { contributions, featuredRepos, githubStats } from "./opensource";
+import { projects } from "./projects";
+import { research } from "./research";
 
-const focusAreas = [
-  {
-    title: "Vision + GenAI",
-    description:
-      "Training, evaluation, and adaptation of vision-language and diffusion models for applied product use cases.",
-  },
-  {
-    title: "ML Platforms",
-    description:
-      "FastAPI, Docker, and cloud-backed serving workflows for experiments that need to survive real production constraints.",
-  },
-  {
-    title: "Retrieval Systems",
-    description:
-      "Embedding pipelines, ranking, and multimodal retrieval flows built for speed, relevance, and measurable business impact.",
-  },
-];
+const buttonPrimary =
+  "rounded-full bg-emerald-300 px-6 py-3 text-sm font-semibold text-stone-950 transition hover:bg-emerald-200";
+const buttonGhost =
+  "rounded-full border border-white/15 px-6 py-3 text-sm font-semibold text-white transition hover:border-emerald-300/50";
 
-const metrics = [
-  { value: "2+", label: "years building ML systems" },
-  { value: "100+", label: "SKUs improved in model workflows" },
-  { value: "3", label: "flagship projects showcased" },
-];
-
-const experience = [
-  {
-    company: "AiLusion, Merosa Technologies Pvt. Ltd",
-    role: "Machine Learning Engineer",
-    period: "Jan 2025 - Present",
-    summary:
-      "Built and fine-tuned large-scale VLMs and diffusion models with PyTorch, Flux-Dev, and CLIP-style embeddings. Improved training and retrieval workflows with mixed precision, distributed evaluation, and targeted adaptation techniques including LoRA, QLoRA, and DreamBooth.",
-  },
-  {
-    company: "Highradius Technologies",
-    role: "Data Science Intern",
-    period: "Jul 2023 - Nov 2023",
-    summary:
-      "Developed deduction classification models with XGBoost and LightGBM, improved accuracy through feature engineering, and automated monitoring pipelines to reduce drift-driven prediction failures.",
-  },
-];
-
-const projects = [
-  {
-    title: "EchoSeek",
-    stack: "Llama 3.1, LangChain, FastAPI, Docker, Next.js",
-    description:
-      "A multimodal product discovery platform using retrieval-augmented generation for intelligent search, comparison, and real-time response quality.",
-  },
-  {
-    title: "White Balance Regression Model",
-    stack: "EfficientNetV2-S, Computer Vision",
-    description:
-      "A vision model for estimating color temperature and tint, designed to improve automatic white balance correction accuracy in image pipelines.",
-  },
-  {
-    title: "Order Amount Prediction",
-    stack: "Random Forest, XGBoost, Forecasting",
-    description:
-      "A business forecasting workflow with feature engineering and tuned ensemble models to strengthen downstream planning decisions.",
-  },
-];
-
-const skillGroups = [
-  {
-    label: "Core ML",
-    items: ["Python", "PyTorch", "TensorFlow", "Computer Vision", "Generative AI"],
-  },
-  {
-    label: "LLM Stack",
-    items: ["LLMs", "RAG", "LangChain", "NVIDIA NIM", "Prompt Workflows"],
-  },
-  {
-    label: "Product Engineering",
-    items: ["FastAPI", "Next.js", "React", "Docker", "AWS SageMaker"],
-  },
-];
+function SectionHead({
+  label,
+  title,
+  href,
+  cta,
+}: {
+  label: string;
+  title: string;
+  href: string;
+  cta: string;
+}) {
+  return (
+    <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+      <div>
+        <SectionLabel>{label}</SectionLabel>
+        <h2 className="mt-3 text-3xl font-semibold text-white">{title}</h2>
+      </div>
+      <Link className="text-sm text-emerald-200 transition hover:text-white" href={href}>
+        {cta} &rarr;
+      </Link>
+    </div>
+  );
+}
 
 export default function Home() {
+  const allSkills = skillGroups.flatMap((g) => g.items);
+  const half = Math.ceil(allSkills.length / 2);
+
   return (
-    <main className="relative overflow-hidden bg-[radial-gradient(circle_at_top,_rgba(255,255,255,0.16),_transparent_32%),linear-gradient(180deg,_#1f4b3f_0%,_#10241f_46%,_#091310_100%)] text-stone-100">
-      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[size:72px_72px] opacity-15" />
-
-      <div className="relative mx-auto flex min-h-screen w-full max-w-7xl flex-col px-6 py-8 sm:px-8 lg:px-12">
-        <header className="flex flex-col gap-6 rounded-[2rem] border border-white/10 bg-white/6 px-6 py-5 backdrop-blur md:flex-row md:items-center md:justify-between">
-          <div>
-            <p className="font-mono text-xs uppercase tracking-[0.35em] text-emerald-200/80">
-              Personal Dashboard
-            </p>
-            <h1 className="mt-2 text-2xl font-semibold tracking-tight text-white sm:text-3xl">
-              Pratim Dasude
-            </h1>
-          </div>
-
-          <nav className="flex flex-wrap gap-3 text-sm text-stone-300">
-            <a className="rounded-full border border-white/10 px-4 py-2 transition hover:border-emerald-300/40 hover:text-white" href="#work">
-              Work
-            </a>
-            <a className="rounded-full border border-white/10 px-4 py-2 transition hover:border-emerald-300/40 hover:text-white" href="#projects">
-              Projects
-            </a>
-            <a className="rounded-full border border-white/10 px-4 py-2 transition hover:border-emerald-300/40 hover:text-white" href="#skills">
-              Skills
-            </a>
-            <a className="rounded-full border border-emerald-300/30 bg-emerald-300/10 px-4 py-2 text-emerald-100 transition hover:bg-emerald-300/20" href="mailto:pratim4dasude@gmail.com">
-              Contact
-            </a>
-          </nav>
-        </header>
-
-        <section className="grid gap-8 pb-12 pt-10 lg:grid-cols-[1.3fr_0.7fr] lg:items-end">
+    <main id="main" className="relative overflow-hidden text-stone-100">
+      <div
+        aria-hidden
+        className="hero-glow pointer-events-none absolute inset-x-0 top-0 h-[40rem] bg-[radial-gradient(ellipse_50%_55%_at_70%_30%,rgba(52,211,153,0.22),transparent_70%)]"
+      />
+      <div className="relative mx-auto w-full max-w-7xl px-6 sm:px-8 lg:px-12">
+        {/* Hero */}
+        <section className="grid gap-10 pb-16 pt-16 lg:grid-cols-[1.3fr_0.7fr] lg:items-end lg:pt-24">
           <div className="space-y-6">
-            <p className="font-mono text-sm uppercase tracking-[0.35em] text-emerald-200/75">
-              Machine Learning Engineer
+            <p className="font-mono text-sm uppercase tracking-[0.35em] text-emerald-200/75">{profile.role}</p>
+            <h1 className="max-w-4xl bg-gradient-to-br from-white via-white to-emerald-200 bg-clip-text text-5xl font-semibold tracking-tight text-transparent sm:text-6xl lg:text-7xl">
+              Building AI products that move from research to production.
+            </h1>
+            <p className="max-w-2xl text-base leading-8 text-stone-300 sm:text-lg">
+              I work across multimodal learning, retrieval systems, and deployment-focused ML engineering. The goal is straightforward: make advanced models useful, measurable, and reliable in real products.
             </p>
-            <div className="space-y-4">
-              <h2 className="max-w-4xl text-5xl font-semibold tracking-tight text-white sm:text-6xl lg:text-7xl">
-                Building AI products that move from research to production.
-              </h2>
-              <p className="max-w-2xl text-base leading-8 text-stone-300 sm:text-lg">
-                I work across multimodal learning, retrieval systems, and deployment-focused ML engineering. The goal is straightforward: make advanced models useful, measurable, and reliable in real products.
-              </p>
-            </div>
-
             <div className="flex flex-wrap gap-3">
+              <Link href="/projects" className={buttonPrimary}>
+                View projects
+              </Link>
+              <Link href="/contact" className={buttonGhost}>
+                Get in touch
+              </Link>
+              <a href={profile.github.href} target="_blank" rel="noopener noreferrer" className={buttonGhost}>
+                GitHub
+              </a>
+            </div>
+            <div className="flex flex-wrap gap-2 pt-2">
               {highlights.map((item) => (
-                <span
-                  key={item}
-                  className="rounded-full border border-emerald-200/15 bg-emerald-100/8 px-4 py-2 text-sm text-emerald-50/90"
-                >
-                  {item}
-                </span>
+                <Tag key={item}>{item}</Tag>
               ))}
             </div>
           </div>
 
-          <aside className="rounded-[2rem] border border-white/10 bg-stone-950/35 p-6 shadow-2xl shadow-black/20 backdrop-blur">
-            <p className="font-mono text-xs uppercase tracking-[0.35em] text-emerald-200/70">
-              Snapshot
-            </p>
-            <div className="mt-6 space-y-5">
+          <Card className="bg-stone-950/35 shadow-2xl shadow-black/20">
+            <SectionLabel>Snapshot</SectionLabel>
+            <dl className="mt-6 space-y-5">
               <div>
-                <p className="text-sm text-stone-400">Location</p>
-                <p className="mt-1 text-lg text-white">Bengaluru, Karnataka</p>
+                <dt className="text-sm text-stone-400">Location</dt>
+                <dd className="mt-1 text-lg text-white">{profile.location}</dd>
               </div>
               <div>
-                <p className="text-sm text-stone-400">Current focus</p>
-                <p className="mt-1 text-lg text-white">
-                  VLMs, diffusion workflows, RAG systems
-                </p>
+                <dt className="text-sm text-stone-400">Current focus</dt>
+                <dd className="mt-1 text-lg text-white">{profile.focus}</dd>
               </div>
               <div>
-                <p className="text-sm text-stone-400">Links</p>
-                <div className="mt-2 flex flex-col gap-2 text-sm text-emerald-100">
-                  <a className="transition hover:text-white" href="mailto:pratim4dasude@gmail.com">
-                    pratim4dasude@gmail.com
+                <dt className="text-sm text-stone-400">Email</dt>
+                <dd className="mt-1 text-emerald-100">
+                  <a className="transition hover:text-white" href={`mailto:${profile.email}`}>
+                    {profile.email}
                   </a>
-                  <span>linkedin/pratim-dasude</span>
-                  <span>github/pratim4dasude</span>
-                </div>
+                </dd>
               </div>
-            </div>
-          </aside>
+            </dl>
+          </Card>
         </section>
 
+        {/* Tech ticker */}
+        <div className="space-y-3 pb-12" aria-label="Technologies I use">
+          <Marquee items={allSkills.slice(0, half)} />
+          <Marquee items={allSkills.slice(half)} reverse />
+        </div>
+
+        {/* Metrics */}
         <section className="grid gap-4 border-y border-white/10 py-8 sm:grid-cols-3">
-          {metrics.map((metric) => (
-            <div key={metric.label} className="rounded-[1.5rem] border border-white/8 bg-white/5 p-5">
-              <p className="text-3xl font-semibold text-white">{metric.value}</p>
-              <p className="mt-2 text-sm leading-6 text-stone-300">{metric.label}</p>
-            </div>
+          {metrics.map((metric, i) => (
+            <Reveal key={metric.label} delay={i * 100}>
+              <div className="rounded-[1.5rem] border border-white/8 bg-white/5 p-5">
+                <p className="text-3xl font-semibold text-white">{metric.value}</p>
+                <p className="mt-2 text-sm leading-6 text-stone-300">{metric.label}</p>
+              </div>
+            </Reveal>
           ))}
         </section>
 
-        <section className="grid gap-6 py-12 lg:grid-cols-[0.9fr_1.1fr]">
-          <div className="rounded-[2rem] border border-white/10 bg-white/6 p-6 backdrop-blur">
-            <p className="font-mono text-xs uppercase tracking-[0.35em] text-emerald-200/70">
-              About
-            </p>
-            <h3 className="mt-4 text-2xl font-semibold text-white">Engineering with an ML product mindset</h3>
-            <p className="mt-4 text-sm leading-7 text-stone-300 sm:text-base">
-              My work sits between model experimentation and shipping systems that other teams can depend on. That includes training loops, evaluation pipelines, retrieval quality, backend APIs, and the product surface that exposes model capabilities cleanly.
-            </p>
-          </div>
-
-          <div className="grid gap-4 sm:grid-cols-3">
-            {focusAreas.map((area) => (
-              <article
-                key={area.title}
-                className="rounded-[2rem] border border-white/10 bg-stone-950/35 p-6 backdrop-blur"
-              >
-                <h3 className="text-lg font-semibold text-white">{area.title}</h3>
-                <p className="mt-3 text-sm leading-7 text-stone-300">{area.description}</p>
-              </article>
-            ))}
-          </div>
-        </section>
-
-        <section id="work" className="grid gap-6 py-6 lg:grid-cols-[0.7fr_1.3fr]">
-          <div>
-            <p className="font-mono text-xs uppercase tracking-[0.35em] text-emerald-200/70">
-              Experience
-            </p>
-            <h3 className="mt-4 text-3xl font-semibold text-white">Recent work</h3>
-          </div>
-
-          <div className="space-y-4">
-            {experience.map((item) => (
-              <article
-                key={`${item.company}-${item.role}`}
-                className="rounded-[2rem] border border-white/10 bg-white/6 p-6 backdrop-blur"
-              >
-                <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
-                  <div>
-                    <h4 className="text-xl font-semibold text-white">{item.role}</h4>
-                    <p className="mt-1 text-sm text-emerald-100">{item.company}</p>
-                  </div>
-                  <p className="font-mono text-xs uppercase tracking-[0.22em] text-stone-400">
-                    {item.period}
-                  </p>
-                </div>
-                <p className="mt-4 text-sm leading-7 text-stone-300 sm:text-base">
-                  {item.summary}
-                </p>
-              </article>
-            ))}
-          </div>
-        </section>
-
-        <section id="projects" className="py-8">
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-            <div>
-              <p className="font-mono text-xs uppercase tracking-[0.35em] text-emerald-200/70">
-                Selected Projects
+        {/* About */}
+        <Reveal>
+          <section className="grid gap-6 pt-16 lg:grid-cols-[0.9fr_1.1fr]">
+            <Card>
+              <SectionLabel>About</SectionLabel>
+              <h2 className="mt-4 text-2xl font-semibold text-white">Engineering with an ML product mindset</h2>
+              <p className="mt-4 text-sm leading-7 text-stone-300 sm:text-base">
+                My work sits between model experimentation and shipping systems that other teams can depend on: training loops, evaluation pipelines, retrieval quality, backend APIs, and the product surface that exposes model capabilities cleanly.
               </p>
-              <h3 className="mt-3 text-3xl font-semibold text-white">Systems built around applied ML</h3>
-            </div>
-          </div>
-
-          <div className="mt-6 grid gap-4 lg:grid-cols-3">
-            {projects.map((project, index) => (
-              <article
-                key={project.title}
-                className="group rounded-[2rem] border border-white/10 bg-white/6 p-6 transition hover:-translate-y-1 hover:border-emerald-300/30 hover:bg-white/8"
-              >
-                <p className="font-mono text-xs uppercase tracking-[0.25em] text-emerald-200/65">
-                  Project 0{index + 1}
-                </p>
-                <h4 className="mt-4 text-xl font-semibold text-white">{project.title}</h4>
-                <p className="mt-2 text-sm text-emerald-100">{project.stack}</p>
-                <p className="mt-4 text-sm leading-7 text-stone-300">{project.description}</p>
-              </article>
-            ))}
-          </div>
-        </section>
-
-        <section id="skills" className="grid gap-6 py-8 lg:grid-cols-[1fr_0.7fr]">
-          <div className="rounded-[2rem] border border-white/10 bg-stone-950/35 p-6 backdrop-blur">
-            <p className="font-mono text-xs uppercase tracking-[0.35em] text-emerald-200/70">
-              Skills
-            </p>
-            <div className="mt-6 space-y-5">
-              {skillGroups.map((group) => (
-                <div key={group.label}>
-                  <h4 className="text-sm font-semibold uppercase tracking-[0.18em] text-white/90">
-                    {group.label}
-                  </h4>
-                  <div className="mt-3 flex flex-wrap gap-3">
-                    {group.items.map((skill) => (
-                      <span
-                        key={skill}
-                        className="rounded-full border border-white/10 bg-white/6 px-4 py-2 text-sm text-stone-200"
-                      >
-                        {skill}
-                      </span>
-                    ))}
-                  </div>
-                </div>
+              <p className="mt-4 text-sm text-stone-400">
+                {education.degree}, {education.school} ({education.period}), CGPA {education.cgpa}.
+              </p>
+              <Link href="/about" className="mt-5 inline-block text-sm text-emerald-200 transition hover:text-white">
+                More about me &rarr;
+              </Link>
+            </Card>
+            <div className="grid gap-4 sm:grid-cols-3">
+              {focusAreas.map((area) => (
+                <Card key={area.title} className="bg-stone-950/35">
+                  <h3 className="text-lg font-semibold text-white">{area.title}</h3>
+                  <p className="mt-3 text-sm leading-7 text-stone-300">{area.description}</p>
+                </Card>
               ))}
             </div>
-          </div>
+          </section>
+        </Reveal>
 
-          <div className="rounded-[2rem] border border-white/10 bg-white/6 p-6 backdrop-blur">
-            <p className="font-mono text-xs uppercase tracking-[0.35em] text-emerald-200/70">
-              Education
-            </p>
-            <h3 className="mt-4 text-2xl font-semibold text-white">
-              Kalinga Institute of Industrial Technology
-            </h3>
-            <p className="mt-3 text-sm leading-7 text-stone-300 sm:text-base">
-              B.Tech in Computer Science and Engineering, 2020 - 2024
-            </p>
-            <p className="mt-2 text-sm leading-7 text-stone-300 sm:text-base">
-              CGPA: 9.15
-            </p>
-            <p className="mt-4 text-sm leading-7 text-stone-300 sm:text-base">
-              Strong academic grounding in machine learning, deep learning, computer vision, and software systems.
-            </p>
-          </div>
-        </section>
+        {/* Experience */}
+        <Reveal>
+          <section className="pt-16">
+            <SectionHead label="Experience" title="Where I have worked" href="/experience" cta="Full experience" />
+            <div className="mt-6 grid gap-4 lg:grid-cols-2">
+              {experience.map((item) => (
+                <CardLink key={item.slug} href={`/experience/${item.slug}`}>
+                  <div className="flex flex-col gap-1 sm:flex-row sm:items-start sm:justify-between">
+                    <div>
+                      <h3 className="text-xl font-semibold text-white">{item.role}</h3>
+                      <p className="mt-1 text-sm text-emerald-100">{item.company}</p>
+                    </div>
+                    <p className="font-mono text-xs uppercase tracking-[0.22em] text-stone-400">{item.period}</p>
+                  </div>
+                  <ul className="mt-4 list-disc space-y-1 pl-5 text-sm text-stone-300 marker:text-emerald-300/60">
+                    {item.highlights.slice(0, 3).map((h) => (
+                      <li key={h}>{h}</li>
+                    ))}
+                  </ul>
+                  <span className="mt-5 inline-block text-sm font-medium text-emerald-200 transition group-hover:translate-x-1">
+                    Full details &rarr;
+                  </span>
+                </CardLink>
+              ))}
+            </div>
+          </section>
+        </Reveal>
+
+        {/* Projects */}
+        <Reveal>
+          <section className="pt-16">
+            <SectionHead label="Selected Projects" title="Systems built around applied ML" href="/projects" cta="All projects" />
+            <div className="mt-6 grid gap-4 lg:grid-cols-3">
+              {projects.map((project, index) => (
+                <CardLink key={project.slug} href={`/projects/${project.slug}`}>
+                  <p className="font-mono text-xs uppercase tracking-[0.25em] text-emerald-200/65">Project 0{index + 1}</p>
+                  <h3 className="mt-4 text-xl font-semibold text-white">{project.title}</h3>
+                  <p className="mt-2 text-sm text-emerald-100">{project.stack}</p>
+                  <p className="mt-4 text-sm leading-7 text-stone-300">{project.tagline}</p>
+                  <span className="mt-6 inline-block text-sm font-medium text-emerald-200 transition group-hover:translate-x-1">
+                    Read the full write-up &rarr;
+                  </span>
+                </CardLink>
+              ))}
+            </div>
+          </section>
+        </Reveal>
+
+        {/* Research */}
+        <Reveal>
+          <section className="pt-16">
+            <SectionHead label="Research" title="Experiments and applied research" href="/research" cta="All research" />
+            <div className="mt-6 grid gap-4 md:grid-cols-2">
+              {research.slice(0, 4).map((item) => (
+                <CardLink key={item.slug} href="/research">
+                  <p className="font-mono text-xs uppercase tracking-[0.25em] text-emerald-200/65">{item.area}</p>
+                  <h3 className="mt-3 text-lg font-semibold text-white">{item.title}</h3>
+                  <p className="mt-3 text-sm leading-7 text-stone-300">{item.summary}</p>
+                  <div className="mt-4 flex flex-wrap gap-2">
+                    {item.tags.slice(0, 3).map((t) => (
+                      <Tag key={t}>{t}</Tag>
+                    ))}
+                  </div>
+                </CardLink>
+              ))}
+            </div>
+          </section>
+        </Reveal>
+
+        {/* Open source */}
+        <Reveal>
+          <section className="pt-16">
+            <SectionHead label="Open Source" title="Contributions and public work" href="/open-source" cta="See all" />
+            <div className="mt-6 grid gap-4 lg:grid-cols-[1fr_1fr]">
+              <div className="space-y-4">
+                {contributions.map((c) => (
+                  <a key={c.url} href={c.url} target="_blank" rel="noopener noreferrer" className="group block">
+                    <Card className="transition duration-300 group-hover:-translate-y-1 group-hover:border-emerald-300/40">
+                      <div className="flex items-center justify-between gap-3">
+                        <p className="font-mono text-sm text-emerald-100">{c.repo}</p>
+                        <span className="rounded-full border border-white/15 px-3 py-1 text-xs text-stone-300">{c.status}</span>
+                      </div>
+                      <h3 className="mt-3 text-base font-semibold text-white">{c.title}</h3>
+                    </Card>
+                  </a>
+                ))}
+              </div>
+              <div className="grid gap-4 sm:grid-cols-2">
+                {featuredRepos.slice(0, 4).map((r) => (
+                  <a key={r.name} href={r.url} target="_blank" rel="noopener noreferrer" className="group block">
+                    <Card className="h-full bg-stone-950/35 transition duration-300 group-hover:-translate-y-1 group-hover:border-emerald-300/40">
+                      <h3 className="break-all font-mono text-sm text-emerald-100">{r.name}</h3>
+                      <p className="mt-2 line-clamp-3 text-sm leading-6 text-stone-300">{r.description}</p>
+                    </Card>
+                  </a>
+                ))}
+              </div>
+            </div>
+            <a
+              className="mt-4 inline-block text-sm text-emerald-200 transition hover:text-white"
+              href={githubStats.profile}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Browse all {githubStats.publicRepos} repositories on GitHub &rarr;
+            </a>
+          </section>
+        </Reveal>
+
+        {/* Skills */}
+        <Reveal>
+          <section className="pt-16">
+            <SectionHead label="Skills" title="Tools I work with" href="/skills" cta="Explore skills" />
+            <div className="mt-6 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+              {skillGroups.map((group) => (
+                <Card key={group.label} className="bg-stone-950/35">
+                  <h3 className="text-sm font-semibold uppercase tracking-[0.18em] text-white/90">{group.label}</h3>
+                  <div className="mt-4 flex flex-wrap gap-2">
+                    {group.items.slice(0, 5).map((s) => (
+                      <Tag key={s}>{s}</Tag>
+                    ))}
+                  </div>
+                </Card>
+              ))}
+            </div>
+          </section>
+        </Reveal>
+
+        {/* CTA */}
+        <Reveal>
+          <section className="pt-16">
+            <Card className="flex flex-col items-start gap-4 bg-emerald-300/10 sm:flex-row sm:items-center sm:justify-between">
+              <div>
+                <h2 className="text-2xl font-semibold text-white">Let&apos;s build something.</h2>
+                <p className="mt-2 text-stone-300">Open to ML engineering roles and interesting collaborations.</p>
+              </div>
+              <Link href="/contact" className={buttonPrimary}>
+                Contact me
+              </Link>
+            </Card>
+          </section>
+        </Reveal>
       </div>
     </main>
   );
