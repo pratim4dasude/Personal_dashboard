@@ -4,9 +4,10 @@ import Reveal from "./components/Reveal";
 import VisionDemo from "./components/home/VisionDemo";
 import WorkRows from "./components/home/WorkRows";
 import Label from "./components/ui/Label";
-import { education, experience, profile } from "./data";
+import { education, experience, profile, skillGroups } from "./data";
 import { contributions, featuredRepos, githubStats } from "./opensource";
 import { projects } from "./projects";
+import { publications, scholar } from "./publications";
 import { research } from "./research";
 
 const stack = [
@@ -130,9 +131,48 @@ export default function Home() {
         </p>
       </div>
 
+      {/* ABOUT */}
+      <Section className="pt-24 lg:pt-36">
+        <Head index="01" label="About" href="/about" cta="More" />
+        <Reveal>
+          <p className="font-display mt-10 max-w-6xl text-[clamp(1.9rem,4.6vw,4.4rem)] !leading-[1.08] text-muted">
+            <span className="text-fg">I work where models meet messy reality:</span> segmenting cracks and drywall seams
+            with fine-tuned Grounding DINO and SAM, adapting diffusion models, and building the{" "}
+            <span className="font-emph text-accent">retrieval and APIs</span> around them so they ship.
+          </p>
+        </Reveal>
+        <p className="label mt-10">
+          {education.degree} / KIIT / {education.period}
+        </p>
+      </Section>
+
+      {/* EXPERIENCE */}
+      <Section className="pt-20 lg:pt-32">
+        <Head index="02" label="Experience" href="/experience" cta="Full experience" />
+        <ul className="mt-8 border-b border-line">
+          {experience.map((e) => (
+            <li key={e.slug}>
+              <Link
+                href={`/experience/${e.slug}`}
+                className="group grid gap-2 border-t border-line py-6 sm:grid-cols-12 sm:items-baseline sm:gap-6"
+              >
+                <p className="label sm:col-span-3">{e.period}</p>
+                <p className="text-xl font-light tracking-tight transition-transform duration-500 group-hover:translate-x-1.5 sm:col-span-4 sm:text-2xl">
+                  {e.role}
+                </p>
+                <p className="text-muted sm:col-span-4">{e.company}</p>
+                <span aria-hidden className="label hidden text-right transition-transform group-hover:translate-x-1 group-hover:!text-accent sm:col-span-1 sm:block">
+                  &rarr;
+                </span>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </Section>
+
       {/* WORK */}
       <Section className="pt-24 lg:pt-36">
-        <Head index="01" label="Selected work" href="/projects" cta="All projects" />
+        <Head index="03" label="Projects" href="/projects" cta="All projects" />
         <h2 className="font-display mt-8 max-w-4xl text-[clamp(2.4rem,6vw,5.5rem)]">
           Models that leave the <span className="font-emph text-accent">notebook</span>.
         </h2>
@@ -146,7 +186,7 @@ export default function Home() {
         <div className="grid gap-10 lg:grid-cols-12 lg:gap-12">
           <div className="lg:col-span-4">
             <div className="lg:sticky lg:top-28">
-              <Head index="02" label="Research" />
+              <Head index="04" label="Research" />
               <h2 className="font-display mt-8 text-[clamp(2.4rem,4.6vw,4.4rem)]">
                 Questions I keep <span className="font-emph text-accent">testing</span>.
               </h2>
@@ -189,11 +229,41 @@ export default function Home() {
             ))}
           </ul>
         </div>
+
+        {/* Publications preview */}
+        <div className="mt-20 border-t border-line pt-10">
+          <div className="flex items-center justify-between gap-4">
+            <p className="label !text-fg">
+              Publications <span className="text-muted">/ {publications.length} papers / {scholar.citations} citations</span>
+            </p>
+            <Link href="/research#publications" className="label transition-colors hover:!text-accent">
+              All &rarr;
+            </Link>
+          </div>
+          <ul className="mt-6 border-b border-line">
+            {publications.map((p) => (
+              <li key={p.slug}>
+                <Link
+                  href="/research#publications"
+                  className="group grid gap-2 border-t border-line py-5 sm:grid-cols-12 sm:items-baseline sm:gap-6"
+                >
+                  <p className="label sm:col-span-2">{p.venueShort}</p>
+                  <p className="text-lg font-light leading-snug tracking-tight transition-transform duration-500 group-hover:translate-x-1.5 sm:col-span-9">
+                    {p.title}
+                  </p>
+                  <span aria-hidden className="label hidden text-right group-hover:!text-accent sm:col-span-1 sm:block">
+                    &rarr;
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
       </Section>
 
       {/* OPEN SOURCE */}
       <Section className="pt-24 lg:pt-40">
-        <Head index="03" label="Open source" href="/open-source" cta="All contributions" />
+        <Head index="05" label="Open source" href="/open-source" cta="All contributions" />
         <div className="mt-10 grid gap-12 lg:grid-cols-12 lg:gap-12">
           <Reveal className="lg:col-span-5">
             <p className="font-display text-[clamp(7rem,20vw,16rem)] leading-[0.8] text-accent">{githubStats.publicRepos}</p>
@@ -254,38 +324,20 @@ export default function Home() {
         </div>
       </Section>
 
-      {/* ABOUT */}
-      <Section className="pt-28 lg:pt-44">
-        <Head index="04" label="About" href="/about" cta="More" />
-        <Reveal>
-          <p className="font-display mt-10 max-w-6xl text-[clamp(1.9rem,4.6vw,4.4rem)] !leading-[1.08] text-muted">
-            <span className="text-fg">I work where models meet messy reality:</span> segmenting cracks and drywall seams
-            with fine-tuned Grounding DINO and SAM, adapting diffusion models, and building the{" "}
-            <span className="font-emph text-accent">retrieval and APIs</span> around them so they ship.
-          </p>
-        </Reveal>
-        <p className="label mt-10">
-          {education.degree} / KIIT / {education.period}
-        </p>
-      </Section>
-
-      {/* EXPERIENCE */}
-      <Section className="pt-20 lg:pt-28">
-        <ul className="border-b border-line">
-          {experience.map((e) => (
-            <li key={e.slug}>
+      {/* SKILLS */}
+      <Section className="pt-24 lg:pt-40">
+        <Head index="06" label="Skills" href="/skills" cta="Explore the map" />
+        <ul className="mt-8 border-b border-line">
+          {skillGroups.map((g) => (
+            <li key={g.label}>
               <Link
-                href={`/experience/${e.slug}`}
-                className="group grid gap-2 border-t border-line py-6 sm:grid-cols-12 sm:items-baseline sm:gap-6"
+                href="/skills"
+                className="group grid gap-3 border-t border-line py-6 sm:grid-cols-12 sm:items-baseline sm:gap-6"
               >
-                <p className="label sm:col-span-3">{e.period}</p>
                 <p className="text-xl font-light tracking-tight transition-transform duration-500 group-hover:translate-x-1.5 sm:col-span-4 sm:text-2xl">
-                  {e.role}
+                  {g.label}
                 </p>
-                <p className="text-muted sm:col-span-4">{e.company}</p>
-                <span aria-hidden className="label hidden text-right transition-transform group-hover:translate-x-1 group-hover:!text-accent sm:col-span-1 sm:block">
-                  &rarr;
-                </span>
+                <p className="font-mono text-xs leading-7 text-muted sm:col-span-8">{g.items.join(", ")}</p>
               </Link>
             </li>
           ))}

@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 export default function SkillsPage() {
   return (
     <main id="main" className="mx-auto w-full max-w-[1400px] px-5 pb-24 pt-12 sm:px-8 sm:pt-20">
-      <Label index="03" accent>
+      <Label index="06" accent>
         Skills
       </Label>
       <h1 className="font-display mt-6 max-w-5xl text-[clamp(2.75rem,8vw,7.5rem)] text-fg">

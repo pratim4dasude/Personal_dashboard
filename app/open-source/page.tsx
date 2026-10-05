@@ -19,7 +19,7 @@ export default function OpenSourcePage() {
   return (
     <Shell>
       <PageHero
-        index="03"
+        index="05"
         label="Open Source"
         intro="Pull requests to projects I use, plus the repositories I build in the open."
         aside={

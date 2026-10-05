@@ -6,7 +6,7 @@ const fmt = (iso: string) =>
 /** Peer-reviewed publications from Google Scholar, as editorial ruled rows. */
 export default function Publications() {
   return (
-    <section aria-labelledby="publications-heading" className="border-t border-line pt-16 sm:pt-24">
+    <section id="publications" aria-labelledby="publications-heading" className="border-t border-line pt-16 sm:pt-24">
       <div className="grid gap-8 lg:grid-cols-12 lg:gap-10">
         <div className="lg:col-span-4">
           <p className="label flex gap-4">

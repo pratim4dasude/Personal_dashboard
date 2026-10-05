@@ -13,7 +13,7 @@ export default function ExperiencePage() {
   return (
     <Shell>
       <PageHero
-        index="04"
+        index="02"
         label="Experience"
         intro="Where I have built and shipped ML systems. Open a role for the full breakdown."
       >

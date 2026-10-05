@@ -6,12 +6,12 @@ import { useState } from "react";
 
 // Primary navigation. Keep in sync with sitemap via app/data.ts navLinks.
 const links = [
-  { n: "01", label: "Work", href: "/projects" },
-  { n: "02", label: "Research", href: "/research" },
-  { n: "03", label: "Open Source", href: "/open-source" },
-  { n: "04", label: "Experience", href: "/experience" },
-  { n: "05", label: "Skills", href: "/skills" },
-  { n: "06", label: "About", href: "/about" },
+  { n: "01", label: "About", href: "/about" },
+  { n: "02", label: "Experience", href: "/experience" },
+  { n: "03", label: "Projects", href: "/projects" },
+  { n: "04", label: "Research", href: "/research" },
+  { n: "05", label: "Open Source", href: "/open-source" },
+  { n: "06", label: "Skills", href: "/skills" },
 ];
 
 export default function SiteHeader() {

@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 export default function AboutPage() {
   return (
     <Shell>
-      <PageHero index="06" label="About">
+      <PageHero index="01" label="About">
         Engineering with an <span className="font-emph">ML product</span> mindset.
       </PageHero>
 
