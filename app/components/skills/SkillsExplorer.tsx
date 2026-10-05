@@ -396,6 +396,29 @@ export default function SkillsExplorer({ groups }: { groups: Group[] }) {
               <span data-cat className="text-muted" />
             </div>
           </div>
+          <ul
+            aria-label="Clusters"
+            className="pointer-events-none absolute left-4 top-4 z-10 hidden space-y-2 border-l border-line-strong pl-3 md:block"
+          >
+            <li className="label !text-[10px]" aria-hidden>
+              Clusters
+            </li>
+            {groups.map((g, i) => (
+              <li
+                key={g.label}
+                onMouseEnter={() => setCluster(i)}
+                onMouseLeave={() => setCluster(null)}
+                className={`label pointer-events-auto flex cursor-default items-center gap-2 !text-[10px] transition-colors ${
+                  cluster === i ? "!text-accent" : "!text-fg"
+                }`}
+              >
+                <Glyph g={i} size={8} />
+                <span>c{i}</span>
+                <span className={cluster === i ? "text-accent" : "text-muted"}>{g.label}</span>
+                <span className={cluster === i ? "text-accent" : "text-muted"}>n={g.items.length}</span>
+              </li>
+            ))}
+          </ul>
           <p className="label pointer-events-none absolute bottom-3 left-4" aria-hidden>
             drag to rotate
           </p>
@@ -405,7 +428,7 @@ export default function SkillsExplorer({ groups }: { groups: Group[] }) {
         </div>
       </div>
 
-      <ul className="mt-5 flex flex-wrap gap-x-7 gap-y-2" aria-label="Clusters">
+      <ul className="mt-5 flex flex-wrap gap-x-7 gap-y-2 md:hidden" aria-label="Clusters (small screens)">
         {groups.map((g, i) => (
           <li
             key={g.label}
