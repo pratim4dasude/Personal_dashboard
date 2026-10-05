@@ -11,6 +11,7 @@ export type Project = {
   gallery?: GalleryItem[];
   pipeline?: PipelineStep[];
   repo?: string;
+  links?: { label: string; href: string }[];
   title: string;
   stack: string;
   description: string;
@@ -33,6 +34,12 @@ export const projects: Project[] = [
   {
     slug: "site-crack-segmentation",
     repo: "https://github.com/pratim4dasude/oRobotics",
+    links: [
+      {
+        label: "PyPI: finetuning-grounding-dino-sam",
+        href: "https://pypi.org/project/finetuning-grounding-dino-sam/",
+      },
+    ],
     cover: "/vision/crack-1-overlay.jpg",
     title: "Prompt-guided crack and drywall segmentation",
     stack: "Grounding DINO, SAM, PyTorch, Colab",

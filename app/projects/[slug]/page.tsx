@@ -141,15 +141,30 @@ export default async function ProjectPage({ params }: PageProps<"/projects/[slug
           <div className="pb-14 md:pb-16">
             <p className="label mb-6 text-accent">Draft write-up</p>
             <p className="max-w-3xl leading-relaxed text-muted">{project.overview}</p>
-            {project.repo && (
-              <a
-                href={project.repo}
-                target="_blank"
-                rel="noreferrer"
-                className="label mt-8 inline-block border-b border-line-strong pb-1 text-fg transition-colors hover:border-accent hover:text-accent"
-              >
-                Source on GitHub &nearr;
-              </a>
+            {(project.repo || project.links?.length) && (
+              <div className="mt-8 flex flex-wrap gap-x-8 gap-y-3">
+                {project.repo && (
+                  <a
+                    href={project.repo}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="label inline-block border-b border-line-strong pb-1 text-fg transition-colors hover:border-accent hover:text-accent"
+                  >
+                    Source on GitHub &#8599;
+                  </a>
+                )}
+                {project.links?.map((l) => (
+                  <a
+                    key={l.href}
+                    href={l.href}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="label inline-block border-b border-line-strong pb-1 text-fg transition-colors hover:border-accent hover:text-accent"
+                  >
+                    {l.label}{" "}&#8599;
+                  </a>
+                ))}
+              </div>
             )}
           </div>
 

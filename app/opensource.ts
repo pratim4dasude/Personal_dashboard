@@ -93,10 +93,19 @@ export const featuredRepos: Repo[] = [
   },
 ];
 
-// PyPI packages. Empty until real package names are added; the section hides itself when empty.
+// PyPI packages (verified against the PyPI JSON API). The section hides itself when empty.
 // Example entry:
 // { name: "my-package", description: "...", pypi: "https://pypi.org/project/my-package/", install: "pip install my-package" }
-export const packages: Pkg[] = [];
+export const packages: Pkg[] = [
+  {
+    name: "finetuning-grounding-dino-sam",
+    description:
+      "A command-line tool to fine-tune Grounding DINO (text-conditioned detection) and Segment Anything (segmentation) on custom COCO-format datasets, with mixed precision and automatic checkpoints.",
+    pypi: "https://pypi.org/project/finetuning-grounding-dino-sam/",
+    github: "https://github.com/pratim4dasude/finetuning_grounded_dino_sam",
+    install: "pip install finetuning-grounding-dino-sam",
+  },
+];
 
 export const githubStats = {
   username: "pratim4dasude",
