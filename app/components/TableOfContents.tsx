@@ -27,24 +27,27 @@ export default function TableOfContents({ items }: { items: TocItem[] }) {
   }, [items]);
 
   return (
-    <nav aria-label="On this page" className="text-sm">
-      <p className="mb-3 font-mono text-xs uppercase tracking-[0.3em] text-emerald-200/70">On this page</p>
-      <ul className="space-y-1 border-l border-white/10">
-        {items.map((item) => (
-          <li key={item.id}>
-            <a
-              href={`#${item.id}`}
-              aria-current={active === item.id ? "location" : undefined}
-              className={`-ml-px block border-l py-1 pl-4 transition ${
-                active === item.id
-                  ? "border-emerald-300 text-emerald-100"
-                  : "border-transparent text-stone-400 hover:text-white"
-              }`}
-            >
-              {item.label}
-            </a>
-          </li>
-        ))}
+    <nav aria-label="On this page">
+      <p className="label mb-4">Contents</p>
+      <ul className="border-t border-line">
+        {items.map((item, i) => {
+          const on = active === item.id;
+          return (
+            <li key={item.id} className="border-b border-line">
+              <a
+                href={`#${item.id}`}
+                aria-current={on ? "location" : undefined}
+                className={`flex items-baseline gap-3 py-2.5 font-mono text-[11px] uppercase tracking-[0.14em] transition-colors ${
+                  on ? "text-accent" : "text-muted hover:text-fg"
+                }`}
+              >
+                <span className="w-5 opacity-70">{String(i + 1).padStart(2, "0")}</span>
+                <span>{item.label}</span>
+                <span aria-hidden className={`ml-auto h-1.5 w-1.5 ${on ? "bg-accent" : "bg-transparent"}`} />
+              </a>
+            </li>
+          );
+        })}
       </ul>
     </nav>
   );

@@ -1,66 +1,54 @@
 import type { Layer } from "../projects";
 
-const BOX_W = 480;
-const BOX_H = 64;
-const GAP = 34;
-const PAD = 12;
+const BOX_W = 520;
+const BOX_H = 60;
+const GAP = 30;
+const PAD = 14;
 const WIDTH = BOX_W + PAD * 2;
+const LIME = "#c6ff3d";
 
+/** Vertical stage diagram: hairline boxes, lime ticks, mono labels. */
 export default function ArchitectureDiagram({ layers, title }: { layers: Layer[]; title: string }) {
   const height = PAD * 2 + layers.length * BOX_H + (layers.length - 1) * GAP;
-  const cx = WIDTH / 2;
+  const cx = PAD + 54;
+  const c = 8;
 
   return (
     <svg
       viewBox={`0 0 ${WIDTH} ${height}`}
       role="img"
       aria-label={`${title} architecture: ${layers.map((l) => l.name).join(", then ")}`}
-      className="mx-auto mt-6 h-auto w-full max-w-xl"
+      className="h-auto w-full max-w-2xl"
     >
-      <defs>
-        <linearGradient id="arch-box" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stopColor="#34d399" stopOpacity="0.22" />
-          <stop offset="100%" stopColor="#0b1d18" stopOpacity="0.9" />
-        </linearGradient>
-        <marker id="arch-arrow" viewBox="0 0 10 10" refX="5" refY="8" markerWidth="8" markerHeight="8" orient="auto">
-          <path d="M0 0 L5 9 L10 0 Z" fill="#6ee7b7" />
-        </marker>
-      </defs>
-
       {layers.map((layer, i) => {
         const y = PAD + i * (BOX_H + GAP);
+        const x = PAD;
+        const r = x + BOX_W;
+        const b = y + BOX_H;
         return (
           <g key={layer.name}>
-            <rect
-              x={PAD}
-              y={y}
-              width={BOX_W}
-              height={BOX_H}
-              rx={16}
-              fill="url(#arch-box)"
-              stroke="#6ee7b7"
-              strokeOpacity="0.35"
+            <rect x={x} y={y} width={BOX_W} height={BOX_H} fill="#0a0a0a" stroke="#ffffff" strokeOpacity="0.14" />
+            {/* detection-box corner brackets */}
+            <path
+              d={`M${x} ${y + c} V${y} H${x + c} M${r - c} ${y} H${r} V${y + c} M${x} ${b - c} V${b} H${x + c} M${r - c} ${b} H${r} V${b - c}`}
+              fill="none"
+              stroke={LIME}
+              strokeWidth="1.5"
             />
-            <text x={PAD + 20} y={y + 28} fill="#ffffff" fontSize="17" fontWeight="600">
-              {layer.name}
-            </text>
-            <text x={PAD + 20} y={y + 48} fill="#a7f3d0" fontSize="13" fontFamily="monospace">
-              {layer.tech}
-            </text>
-            <text x={PAD + BOX_W - 20} y={y + 38} fill="#6ee7b7" fillOpacity="0.5" fontSize="22" fontFamily="monospace" textAnchor="end">
+            <text x={x + 18} y={y + BOX_H / 2 + 5} fill={LIME} fontSize="12" fontFamily="var(--font-dm-mono), monospace" letterSpacing="1.5">
               {String(i + 1).padStart(2, "0")}
             </text>
+            <text x={x + 54} y={y + 26} fill="#ededed" fontSize="17" fontWeight="300" fontFamily="var(--font-inter), sans-serif" letterSpacing="-0.3">
+              {layer.name}
+            </text>
+            <text x={x + 54} y={y + 46} fill="#8d8d8d" fontSize="11" fontFamily="var(--font-dm-mono), monospace" letterSpacing="1">
+              {layer.tech.toUpperCase()}
+            </text>
             {i < layers.length - 1 && (
-              <line
-                x1={cx}
-                y1={y + BOX_H + 3}
-                x2={cx}
-                y2={y + BOX_H + GAP - 3}
-                stroke="#6ee7b7"
-                strokeOpacity="0.7"
-                strokeWidth="2"
-                markerEnd="url(#arch-arrow)"
-              />
+              <g stroke={LIME} strokeWidth="1.5" fill="none">
+                <line x1={cx} y1={b + 4} x2={cx} y2={b + GAP - 4} strokeDasharray="3 3" />
+                <path d={`M${cx - 4} ${b + GAP - 9} L${cx} ${b + GAP - 3} L${cx + 4} ${b + GAP - 9}`} />
+              </g>
             )}
           </g>
         );

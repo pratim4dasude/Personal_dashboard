@@ -1,7 +1,16 @@
 export type Layer = { name: string; tech: string; detail: string };
 
+export type PipelineStep = { name: string; detail: string; image?: string; caption?: string };
+export type GalleryItem = { input: string; mask: string; overlay: string; caption: string; prompt?: string; score?: number };
+
 export type Project = {
   slug: string;
+  year?: string;
+  cover?: string;
+  outcomeLine?: string;
+  gallery?: GalleryItem[];
+  pipeline?: PipelineStep[];
+  repo?: string;
   title: string;
   stack: string;
   description: string;
@@ -22,7 +31,99 @@ export type Project = {
 // summaries. Review each one and replace it with exact decisions, numbers and links.
 export const projects: Project[] = [
   {
+    slug: "site-crack-segmentation",
+    repo: "https://github.com/pratim4dasude/oRobotics",
+    cover: "/vision/crack-1-overlay.jpg",
+    title: "Prompt-guided crack and drywall segmentation",
+    stack: "Grounding DINO, SAM, PyTorch, Colab",
+    description:
+      "Text-prompted segmentation of wall cracks and drywall seams: a fine-tuned Grounding DINO proposes the box, a fine-tuned SAM draws the mask.",
+    tagline: "Type what you want to find. Get a box, then a pixel mask.",
+    outcomeLine: "One text prompt in, one box and one clean binary mask out, on wall cracks and drywall seams.",
+    tags: ["Segmentation", "Grounding DINO", "SAM", "Fine-tuning"],
+    overview:
+      "A two-stage, prompt-based segmentation pipeline for construction-site inspection. A text prompt such as \"cracks\" or \"dry wall\" goes into a fine-tuned Grounding DINO, which returns a bounding box with a confidence score. That box prompts a fine-tuned Segment Anything model, which returns the binary mask. Both models were adapted to the crack and drywall-seam domain.",
+    problem:
+      "Cracks and drywall seams are thin, low-contrast and look different on every surface: rough plaster, painted board, grayscale captures. Off-the-shelf zero-shot detectors miss them or box the whole wall, and a generic SAM given a loose box fills the wrong region. Inspection needs a mask that follows the defect, not a rectangle around it.",
+    approach: [
+      {
+        title: "Describe the target in words",
+        body: "The user supplies a short text prompt. The same pipeline handles both tasks; only the prompt changes, for example \"cracks\" for walls and \"dry wall\" for drywall seams.",
+      },
+      {
+        title: "Fine-tune Grounding DINO for the box",
+        body: "Grounding DINO is fine-tuned on crack and drywall imagery so that the prompt grounds to the defect region with a usable confidence score, instead of the generic wall surface.",
+      },
+      {
+        title: "Fine-tune SAM for the mask",
+        body: "The predicted box becomes the prompt for SAM. Adapting SAM to thin structures keeps the mask tight to the crack edge rather than bleeding into surrounding texture.",
+      },
+      {
+        title: "Evaluate on masks, not boxes",
+        body: "Quality is judged on the segmentation output against ground-truth masks, since a good box can still produce a poor mask on a hairline crack.",
+      },
+    ],
+    architecture: {
+      summary:
+        "Language prompt to box to mask. Each stage hands one artefact to the next, so any stage can be inspected or swapped on its own.",
+      layers: [
+        { name: "Input image", tech: "RGB, 640 x 640", detail: "Site photo of a wall or drywall surface, resized for the detector." },
+        { name: "Text prompt", tech: "\"cracks\" / \"dry wall\"", detail: "Plain-language description of the region to find." },
+        { name: "Grounding DINO", tech: "Fine-tuned detector", detail: "Grounds the prompt to a bounding box with a confidence score." },
+        { name: "SAM", tech: "Fine-tuned segmenter", detail: "Takes the box as a prompt and produces the binary mask." },
+        { name: "Overlay", tech: "Mask + box on input", detail: "Mask tinted over the photo with the labelled box for review." },
+      ],
+    },
+    pipeline: [
+      { name: "Input", detail: "Raw 640 x 640 photo with a text prompt attached.", image: "/vision/crack-2-input.jpg", caption: "input" },
+      { name: "Grounding DINO + SAM", detail: "The prompt grounds to a box; the box prompts the mask.", image: "/vision/crack-2-mask.jpg", caption: "binary mask" },
+      { name: "Overlay", detail: "Mask and labelled box composited on the input.", image: "/vision/crack-2-overlay.jpg", caption: "segment cracks 0.37" },
+    ],
+    gallery: [
+      { input: "/vision/crack-1-input.jpg", mask: "/vision/crack-1-mask.jpg", overlay: "/vision/crack-1-overlay.jpg", caption: "Wall crack on rough plaster", prompt: "cracks" },
+      { input: "/vision/crack-2-input.jpg", mask: "/vision/crack-2-mask.jpg", overlay: "/vision/crack-2-overlay.jpg", caption: "Wide crack on a bright, overexposed wall", prompt: "segment cracks", score: 0.37 },
+      { input: "/vision/crack-3-input.jpg", mask: "/vision/crack-3-mask.jpg", overlay: "/vision/crack-3-overlay.jpg", caption: "Hairline crack on textured render", prompt: "cracks" },
+      { input: "/vision/crack-4-input.jpg", mask: "/vision/crack-4-mask.jpg", overlay: "/vision/crack-4-overlay.jpg", caption: "Drywall seam, rotated capture", prompt: "dry wall", score: 0.52 },
+      { input: "/vision/crack-5-input.jpg", mask: "/vision/crack-5-mask.jpg", overlay: "/vision/crack-5-overlay.jpg", caption: "Drywall seams, grayscale panel", prompt: "dry wall", score: 0.42 },
+      { input: "/vision/crack-6-input.jpg", mask: "/vision/crack-6-mask.jpg", overlay: "/vision/crack-6-overlay.jpg", caption: "Panel joints meeting the floor", prompt: "dry wall", score: 0.28 },
+    ],
+    features: [
+      "One pipeline for two defect types, switched by the text prompt",
+      "Box with confidence score and pixel-level binary mask per image",
+      "Overlay output for fast visual review",
+      "Notebook-based, runs on a Colab GPU",
+    ],
+    challenges: [
+      {
+        problem: "Thin cracks produce very small, low-confidence boxes.",
+        solution: "Fine-tuned the detector on the domain so the prompt grounds to the defect, and kept box confidence visible in the output so weak detections are easy to spot.",
+      },
+      {
+        problem: "Drywall seams share a box with the whole panel, so the mask can spread over the panel.",
+        solution: "Fine-tuned SAM so the mask hugs the seam, and reviewed overlays to catch cases where it still over-segments, such as the lower-confidence samples.",
+      },
+      {
+        problem: "Capture conditions vary: overexposure, grayscale, rotated frames.",
+        solution: "Tested across mixed samples rather than a single clean set, and kept the results gallery unfiltered.",
+      },
+    ],
+    outcomes: [
+      "Working prompt-to-mask pipeline on real wall-crack and drywall-seam photos",
+      "Masks that follow the defect outline on both tasks, with weaker cases kept visible in the gallery",
+    ],
+    learnings: [
+      "A good box is not a good mask: judge segmentation on the mask itself.",
+      "Confidence scores on thin structures stay low even when the mask is right, so treat them as a flag, not a verdict.",
+    ],
+    next: [
+      "Report mask metrics (IoU and Dice) per task on a held-out split",
+      "Add post-processing to remove drywall false positives on panel edges",
+      "Export to a faster inference path for on-site use",
+    ],
+  },
+  {
     slug: "echoseek",
+    outcomeLine: "Product search that answers from the catalog instead of from the model's imagination.",
     title: "EchoSeek",
     stack: "Llama 3.1, LangChain, FastAPI, Docker, Next.js",
     description:
@@ -97,6 +198,7 @@ export const projects: Project[] = [
   },
   {
     slug: "white-balance-regression",
+    outcomeLine: "A learned estimator for color temperature and tint, judged on numeric error and on how the corrected image looks.",
     title: "White Balance Regression Model",
     stack: "EfficientNetV2-S, Computer Vision",
     description:
@@ -164,6 +266,7 @@ export const projects: Project[] = [
   },
   {
     slug: "order-amount-prediction",
+    outcomeLine: "A leak-safe forecasting pipeline whose score reflects how the model is actually used.",
     title: "Order Amount Prediction",
     stack: "Random Forest, XGBoost, Forecasting",
     description:

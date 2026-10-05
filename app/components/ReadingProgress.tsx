@@ -1,14 +1,15 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef } from "react";
 
 export default function ReadingProgress() {
-  const [progress, setProgress] = useState(0);
+  const bar = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const update = () => {
       const max = document.documentElement.scrollHeight - window.innerHeight;
-      setProgress(max > 0 ? Math.min(100, Math.max(0, (window.scrollY / max) * 100)) : 0);
+      const p = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
+      if (bar.current) bar.current.style.transform = `scaleX(${p})`;
     };
     update();
     window.addEventListener("scroll", update, { passive: true });
@@ -20,10 +21,8 @@ export default function ReadingProgress() {
   }, []);
 
   return (
-    <div
-      aria-hidden
-      className="fixed left-0 top-0 z-50 h-0.5 bg-gradient-to-r from-emerald-300 to-emerald-100"
-      style={{ width: `${progress}%` }}
-    />
+    <div aria-hidden className="pointer-events-none fixed left-0 top-0 z-[55] h-[2px] w-full">
+      <div ref={bar} className="h-full w-full origin-left bg-accent" style={{ transform: "scaleX(0)" }} />
+    </div>
   );
 }
