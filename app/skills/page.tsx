@@ -1,49 +1,30 @@
 import type { Metadata } from "next";
-import { Card } from "../components/Card";
-import FloatingChips from "../components/FloatingChips";
-import PageHeader from "../components/PageHeader";
-import Reveal from "../components/Reveal";
-import SectionLabel from "../components/SectionLabel";
-import SkillGlobe, { GROUP_COLORS } from "../components/SkillGlobe";
+import SkillsExplorer from "../components/skills/SkillsExplorer";
+import Label from "../components/ui/Label";
 import { skillGroups } from "../data";
 
 export const metadata: Metadata = {
   title: "Skills | Pratim Dasude",
-  description: "Machine learning, generative AI, LLM and product engineering skills.",
+  description: "Machine learning, generative AI, LLM and product engineering skills, mapped as an embedding space.",
 };
 
 export default function SkillsPage() {
   return (
-    <main id="main" className="mx-auto w-full max-w-6xl px-6 py-10 sm:px-8">
-      <PageHeader
-        label="Skills"
-        title="Tools I work with"
-        intro="Drag the globe to spin it. Each colour is a category, broken down below."
-      />
+    <main id="main" className="mx-auto w-full max-w-[1400px] px-5 pb-24 pt-12 sm:px-8 sm:pt-20">
+      <Label index="03" accent>
+        Skills
+      </Label>
+      <h1 className="font-display mt-6 max-w-5xl text-[clamp(2.75rem,8vw,7.5rem)] text-fg">
+        A map of what I <span className="font-emph text-accent">actually</span> reach for.
+      </h1>
+      <p className="mt-6 max-w-xl text-base leading-relaxed text-muted sm:text-lg">
+        Every tool I use, embedded and clustered. Related skills sit close together. Drag to turn the space, hover a
+        point to inspect it.
+      </p>
 
-      <SkillGlobe groups={skillGroups} />
-
-      <section className="mt-16">
-        <SectionLabel>By category</SectionLabel>
-        <div className="mt-5 grid gap-4 md:grid-cols-2">
-          {skillGroups.map((group, i) => {
-            const color = GROUP_COLORS[i % GROUP_COLORS.length];
-            return (
-              <Reveal key={group.label} delay={i * 80}>
-                <Card className="h-full bg-stone-950/35">
-                  <h2 className="flex items-center gap-3 text-sm font-semibold uppercase tracking-[0.18em] text-white/90">
-                    <span aria-hidden className="h-2.5 w-2.5 rounded-full" style={{ background: color }} />
-                    {group.label}
-                  </h2>
-                  <div className="mt-5">
-                    <FloatingChips items={group.items} color={color} />
-                  </div>
-                </Card>
-              </Reveal>
-            );
-          })}
-        </div>
-      </section>
+      <div className="mt-12 sm:mt-16">
+        <SkillsExplorer groups={skillGroups} />
+      </div>
     </main>
   );
 }
