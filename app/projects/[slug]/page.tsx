@@ -124,7 +124,7 @@ export default async function ProjectPage({ params }: PageProps<"/projects/[slug
           <figure>
             <BBox label={project.image.label} className="mt-6">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={project.image.src} alt={project.image.alt} className="aspect-[5/4] w-full object-cover sm:aspect-[16/9]" />
+              <img src={project.image.src} alt={project.image.alt} className="aspect-[5/4] w-full object-cover object-[50%_30%] sm:aspect-[16/9]" />
             </BBox>
             <figcaption className="label mt-4">{project.image.caption}</figcaption>
           </figure>
