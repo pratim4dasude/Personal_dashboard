@@ -46,7 +46,7 @@ export type Project = {
 
 // NOTE: The detailed sections below are a first draft written from the project
 // summaries. Review each one and replace it with exact decisions, numbers and links.
-export const projects: Project[] = [
+const allProjects: Project[] = [
   {
     slug: "site-crack-segmentation",
     repo: "https://github.com/pratim4dasude/oRobotics",
@@ -609,7 +609,527 @@ export const projects: Project[] = [
     learnings: ["Aggregation level changes which model is appropriate.", "Exogenous calendar signals explain much of the spikes."],
     next: ["Add error metrics per level", "Compare against gradient-boosted baselines"],
   },
+  {
+    slug: "wardrobe-recommendation-engine",
+    repo: "https://github.com/pratim4dasude/Wardrobe_Recommendation_Engine",
+    title: "Wardrobe Recommendation Engine",
+    stack: "GPT-4.1-mini, CLIP, pgvector, BM25, Python",
+    description:
+      "An agentic AI stylist that builds complete outfits using only the clothes that exist in your wardrobe, with multimodal search and hybrid retrieval.",
+    tagline: "An AI stylist that only recommends clothes you actually own.",
+    outcomeLine: "Outfits are built from retrieved wardrobe items and validated in code before anything is shown.",
+    tags: ["Agentic AI", "RAG", "Multimodal", "Fashion"],
+    image: {
+      src: "/projects/wardrobe-recommendation-engine.jpg",
+      alt: "A grid of twenty garment photos from the wardrobe dataset: shirts, jackets, trousers, shorts and tops",
+      label: "wardrobe",
+      caption: "A sample of the wardrobe items the engine retrieves from, taken from the project repository.",
+    },
+    overview:
+      "A personal stylist you talk to in plain English. Describe an occasion, point at a garment, or share an outside photo, and the system returns complete, wearable outfits assembled only from items in the wardrobe. The language model is never allowed to invent clothing: the engine retrieves real items first, asks the model to compose outfits strictly from those, and validates every outfit in code before it is shown.",
+    problem:
+      "A language model asked to style an outfit will happily recommend clothes you do not own. For a wardrobe assistant that makes every answer useless. The task needed retrieval over the real closet, outfit rules the model cannot break, and memory so follow-ups like \"smart clean look\" attach to the earlier request.",
+    approach: [
+      {
+        title: "Understand the request",
+        body: "A language model turns the raw message into structured intent: occasion, vibe, item id, image path and whether a follow-up question is needed. A rule-based layer repairs edge cases and stops stale conversation context from leaking into a fresh request.",
+      },
+      {
+        title: "Remember the session",
+        body: "Per-session memory merges new information with earlier turns, so a short follow-up attaches to the right occasion.",
+      },
+      {
+        title: "Retrieve with hybrid search",
+        body: "For the chosen garment, compatible candidates are pulled per role (top, bottom, outerwear) by combining semantic embeddings in pgvector, a metadata bonus for color and style, and BM25 keyword scoring.",
+      },
+      {
+        title: "Compose, then validate in code",
+        body: "The model assembles three outfits (minimal, layered, alternative) strictly from the retrieved item identifiers. Incomplete or rule-breaking outfits are removed in code instead of being trusted to the model, and two more calls write the intro and a final stylist note.",
+      },
+    ],
+    architecture: {
+      summary:
+        "A retrieval-first pipeline: the model parses and composes, but the closet, the rules and the final check all live outside the model.",
+      layers: [
+        { name: "Message", tech: "Text, item id or outside photo", detail: "Three ways in: describe an occasion, style a specific garment, or pair an outside photo with the wardrobe." },
+        { name: "Query understanding", tech: "LLM + rule repair", detail: "Structured intent, with rules that fix edge cases and block stale context." },
+        { name: "Chat memory", tech: "Session context", detail: "Occasion, vibe, item id, image and history carried across turns." },
+        { name: "Hybrid retrieval", tech: "pgvector + metadata + BM25", detail: "Cosine similarity on embeddings, a color and style bonus, then exact keyword reranking." },
+        { name: "Outfit composer", tech: "GPT-4.1-mini", detail: "Three outfits built only from retrieved identifiers, following hard pairing rules." },
+        { name: "Validation", tech: "Code", detail: "Outfits that are incomplete or break the rules are dropped before display." },
+      ],
+    },
+    features: [
+      "Three full outfits per request, each with a reason, styling notes and a confidence level",
+      "Style around one specific garment, with alternatives from similar items already owned",
+      "Outside photos are captioned and embedded with CLIP, then treated as a temporary garment",
+      "\"Find similar items\" through CLIP image similarity",
+    ],
+    challenges: [
+      {
+        problem: "The model could recommend clothes that are not in the wardrobe.",
+        solution: "Retrieval comes first, composition uses only retrieved identifiers, and every outfit is validated in code.",
+      },
+      {
+        problem: "Old conversation context leaked into new requests.",
+        solution: "Per-session memory merges follow-ups deliberately, and a rule-based layer resets context for a fresh request.",
+      },
+    ],
+    outcomes: [
+      "A working RAG pipeline for fashion with grounded, validated outfits",
+      "Every recommendation carries a reason, styling notes and a confidence level",
+      "A written production and scaling roadmap in the repository",
+    ],
+    learnings: [
+      "Do the checking in code. A prompt asking the model to behave is not a guarantee.",
+      "Hybrid retrieval keeps exact attributes that embeddings alone blur.",
+    ],
+    next: ["Follow the production and scaling roadmap in the repository", "Add an offline evaluation set of requests with expected outfits"],
+  },
+  {
+    slug: "ai-builder",
+    repo: "https://github.com/pratim4dasude/Ai_Builder",
+    title: "AI Builder: multi-agent workers",
+    stack: "FastAPI, Gradio, XGBoost, SQLite, OpenAI",
+    description:
+      "Three composable agent workers for finance, growth marketing and logistics, behind one control panel. Each is a FastAPI service wrapping a multi-agent pipeline.",
+    tagline: "Three domain agents behind one control panel, built on one shared shape.",
+    outcomeLine: "Three FastAPI agent workers that turn CSV data into structured decision memos.",
+    tags: ["Multi-agent", "FastAPI", "Streaming", "Forecasting"],
+    image: {
+      src: "/projects/ai-builder.jpg",
+      alt: "The AI Builder system overview diagram: a Gradio frontend launching three FastAPI workers for finance, logistics and growth",
+      label: "architecture",
+      caption: "The system overview from the project README: one control panel, three workers, one shared layer shape.",
+    },
+    overview:
+      "AI Builder is three self-contained agent workers behind a single Gradio control panel. Each worker is a FastAPI service that wraps a multi-agent pipeline over a domain CSV bundle and returns a structured memo plus the raw analytical data. A finance worker acts as a CFO copilot, a growth worker as a growth strategist, and a logistics worker as a dispatch planner.",
+    problem:
+      "Operations teams sit on ledgers, orders and campaign data and need a clear recommendation, not a spreadsheet. A model alone should not be trusted with the numbers, and three separate agent apps would drift apart into three codebases nobody can reason about.",
+    approach: [
+      {
+        title: "One shape for every worker",
+        body: "The workers share no code but share the same layered shape: API, supervisor, planner or orchestrator, agents, tools, services, CSV connectors, memory and a response formatter with streaming. Understand one and you understand all three.",
+      },
+      {
+        title: "Numbers from analyzers, words from the model",
+        body: "Deterministic services compute the analytics, for example reconciliation, margin and revenue forecasting. The language model writes the memo, while risk flags in the finance worker stay deterministic.",
+      },
+      {
+        title: "Specialist agents that run together",
+        body: "A supervisor and planner hand work to specialist agents, which run concurrently with asyncio, and each worker keeps its own SQLite memory.",
+      },
+      {
+        title: "Stream the result",
+        body: "Each worker exposes chat endpoints including a streaming one (server-sent events), and the control panel launches the workers and health-checks them.",
+      },
+    ],
+    architecture: {
+      summary:
+        "A Gradio panel starts three FastAPI workers. Inside each worker the same layers repeat, from the API down to its own CSV data and memory.",
+      layers: [
+        { name: "Control panel", tech: "Gradio", detail: "Launches each worker as a subprocess and checks its health." },
+        { name: "Worker API", tech: "FastAPI", detail: "Chat, raw-data and streaming endpoints, one service per domain." },
+        { name: "Supervisor and planner", tech: "Agents", detail: "Plans the task and delegates to specialist agents." },
+        { name: "Agents, tools and services", tech: "asyncio", detail: "Specialists call a tool registry and deterministic analyzers, running concurrently." },
+        { name: "Connectors and ML", tech: "CSV, XGBoost", detail: "Domain CSV data, and a persisted XGBoost model for the 7-day revenue forecast." },
+        { name: "Memory and output", tech: "SQLite, memo formatter", detail: "Per-worker memory, then a structured memo with streaming." },
+      ],
+    },
+    features: [
+      "Finance worker: revenue forecast, invoice reconciliation, leakage, margin and risk flags, as a CFO memo",
+      "Growth worker: promotion scoring, posting time, segments and six content variants, as a Growth Action Memo",
+      "Logistics worker: warehouse assignment, clustering, routing and risk, as a Markdown dispatch memo",
+      "Falls back gracefully when no API key is set",
+    ],
+    challenges: [
+      {
+        problem: "Three agent apps can drift apart over time.",
+        solution: "They follow one fixed layered shape, so each worker is structured the same way and can be read the same way.",
+      },
+      {
+        problem: "Model-written memos should not invent numbers.",
+        solution: "The figures come from deterministic analyzers and models, and the model only writes up the result.",
+      },
+    ],
+    outcomes: [
+      "Three working agent workers, each producing a structured memo from its own data",
+      "One control panel that starts and monitors all of them",
+    ],
+    learnings: [
+      "A shared structure matters more than shared code when several agents must stay maintainable.",
+      "Keep calculations deterministic and let the model explain them.",
+    ],
+    next: ["Add an evaluation set that checks memo claims against the analyzer output", "Move worker memory from SQLite to a shared store"],
+  },
+  {
+    slug: "finance-ai-assistant",
+    repo: "https://github.com/pratim4dasude/Finance_AI_Assistant",
+    title: "Finance AI Assistant",
+    stack: "FastAPI, OpenAI, SSE, pytest",
+    description:
+      "An AI financial assistant microservice with multi-agent routing, safety checks, portfolio insights and real-time streaming responses.",
+    tagline: "A financial assistant that classifies, checks safety, then answers.",
+    outcomeLine: "Routes each question to a specialist agent behind a safety guard, and streams the answer.",
+    tags: ["Multi-agent", "Safety", "Streaming", "FastAPI"],
+    overview:
+      "A microservice that helps a novice investor understand and protect their portfolio. Every message is classified, passed through a safety guard and routed to a specialist agent: portfolio health, risk analysis, predictive analysis, market research, recommendations, a finance calculator, support or general questions. Answers stream back in real time.",
+    problem:
+      "Financial questions come in many shapes, and some should never be answered naively. A single prompt cannot reliably tell a portfolio question from a market question, and it has no built-in way to refuse unsafe requests. The assistant needed explicit classification, a safety layer and specialists with narrow jobs.",
+    approach: [
+      {
+        title: "Classify the intent first",
+        body: "A classifier decides what the user is asking, including multi-intent and ambiguous messages, before any specialist runs.",
+      },
+      {
+        title: "Guard safety explicitly",
+        body: "A dedicated safety guard checks requests, tested against pairs of safe and unsafe queries, so refusal behaviour is covered by tests rather than hoped for.",
+      },
+      {
+        title: "Route to narrow specialists",
+        body: "A router sends the request to one specialist agent, each with a single responsibility, such as portfolio health or risk, and a memory layer carries the conversation.",
+      },
+      {
+        title: "Stream responses and test without the model",
+        body: "Responses stream over server-sent events, and the test suite runs without an API key by mocking the language model.",
+      },
+    ],
+    architecture: {
+      summary: "Classify, guard, route, answer. Each step is a separate module, so each can be tested on its own.",
+      layers: [
+        { name: "API", tech: "FastAPI, SSE", detail: "Chat endpoint with streaming responses." },
+        { name: "Classifier", tech: "Intent classification", detail: "Decides the intent, with fixtures for ambiguous, follow-up and multi-intent conversations." },
+        { name: "Safety guard", tech: "Rules and checks", detail: "Screens requests before they reach a specialist." },
+        { name: "Router", tech: "Agent routing", detail: "Chooses the specialist for the request." },
+        { name: "Specialist agents", tech: "Portfolio, risk, market, advice", detail: "Portfolio health, risk analysis, predictive analysis, market research, recommendations, calculator, support and general queries." },
+        { name: "Memory and market data", tech: "Session memory", detail: "Conversation history and market data access." },
+      ],
+    },
+    features: [
+      "Specialist agents for portfolio health, risk, prediction, research and advice",
+      "Safety guard covered by safe and unsafe query pairs",
+      "Server-sent event streaming",
+      "Test fixtures for several investor profiles, such as an active trader, a retiree and an empty portfolio",
+    ],
+    challenges: [
+      {
+        problem: "Classifying ambiguous and multi-intent messages.",
+        solution: "Dedicated conversation fixtures for ambiguous, follow-up and multi-intent sessions drive the classifier and router tests.",
+      },
+      {
+        problem: "Testing an LLM-backed service reliably.",
+        solution: "The model is mocked, so tests pass without an API key and do not depend on live model output.",
+      },
+    ],
+    outcomes: [
+      "A routed multi-agent service with a safety layer and streaming answers",
+      "A test suite for classification, routing, portfolio health and safety",
+    ],
+    learnings: [
+      "Make safety a separate, testable component, not a line in a prompt.",
+      "Fixtures that describe realistic users find routing bugs early.",
+    ],
+    next: ["Publish the behaviour of each specialist with example conversations", "Extend market data beyond the current source"],
+  },
+  {
+    slug: "pdreader",
+    repo: "https://github.com/pratim4dasude/PDReader",
+    title: "PDReader",
+    stack: "React, FastAPI, PostgreSQL + pgvector, Redis, LangGraph",
+    description:
+      "A local-first PDF study assistant with hybrid retrieval and an agentic chat pipeline. Upload books, ask anything, and get cited answers.",
+    tagline: "Turn PDFs into searchable, conversational knowledge, with citations.",
+    outcomeLine: "Answers are grounded in the book text and link back to the source page.",
+    tags: ["RAG", "LangGraph", "pgvector", "Full stack"],
+    image: {
+      src: "/projects/pdreader.jpg",
+      alt: "The PDReader chat interface summarising three uploaded engineering books",
+      label: "chat",
+      caption: "PDReader answering a summary question across three uploaded PDFs.",
+    },
+    overview:
+      "PDReader lets you upload several PDFs through a React interface and chat with them. Ingestion runs in the background so large books never block a request. Retrieval combines vector similarity with full-text search, and a LangGraph agent decides how to handle each question. Answers show collapsible source snippets linked to the original page.",
+    problem:
+      "A basic RAG demo breaks on real books: big files time out on upload, and exact terms such as API names and acronyms get lost when you rely on embeddings alone. A single retrieval step is also wasteful for questions that do not need it, such as greetings or a request for an overview.",
+    approach: [
+      {
+        title: "Ingest in the background",
+        body: "Uploads are validated and persisted, then a Redis queue hands them to a worker that extracts, chunks and embeds the text, and generates a summary and topic map for each document.",
+      },
+      {
+        title: "Hybrid retrieval",
+        body: "Cosine similarity in pgvector is combined with PostgreSQL full-text search using reciprocal-rank fusion, so exact terms are not missed.",
+      },
+      {
+        title: "Route questions with an agent",
+        body: "A LangGraph agent classifies intent first. Greetings stay cheap, overview and study questions reuse the precomputed summary and topic map, and code or search questions run the full retrieval pipeline.",
+      },
+      {
+        title: "Guard the citations",
+        body: "A citation guard flags answers that have no supporting source, and answers expose source snippets linked back to the page.",
+      },
+    ],
+    architecture: {
+      summary: "A React client, a FastAPI backend, a background worker, and Postgres with pgvector for both search modes.",
+      layers: [
+        { name: "Client", tech: "React, TypeScript, Vite", detail: "Upload, document list, chat and polling for ingestion status." },
+        { name: "API", tech: "FastAPI", detail: "Validates uploads, enqueues ingestion and runs the chat agent." },
+        { name: "Queue and worker", tech: "Redis (RQ)", detail: "Background ingestion: extract, chunk, embed, summarise." },
+        { name: "Storage and search", tech: "PostgreSQL + pgvector", detail: "Documents, chunks and jobs, with vector and full-text search." },
+        { name: "Agent", tech: "LangGraph", detail: "Intent routing between cheap replies, precomputed summaries and full retrieval." },
+        { name: "Models", tech: "OpenAI", detail: "text-embedding-3-small for embeddings and GPT-4o-mini for answers." },
+      ],
+    },
+    features: [
+      "Multiple PDFs, with non-blocking background ingestion",
+      "Hybrid vector and full-text retrieval with rank fusion",
+      "Intent-aware chat that avoids retrieval when it is not needed",
+      "Per-document summaries and topic maps, plus cited source snippets",
+    ],
+    challenges: [
+      {
+        problem: "Large books timed out on upload.",
+        solution: "Ingestion moved to a background queue so the request returns immediately and the UI polls for progress.",
+      },
+      {
+        problem: "Embeddings alone missed exact terms like API names and acronyms.",
+        solution: "Added PostgreSQL full-text search and fused the two rankings.",
+      },
+    ],
+    outcomes: [
+      "A local-first study assistant with cited answers across several books",
+      "A containerised stack: React, FastAPI, Postgres, Redis and Docker",
+    ],
+    learnings: [
+      "Routing by intent saves cost and latency before retrieval even starts.",
+      "Hybrid search is a cheap fix for exact-term misses.",
+    ],
+    next: ["Add an evaluation set of questions with known page answers", "Support more file types beyond PDF"],
+  },
+  {
+    slug: "customerchat",
+    repo: "https://github.com/pratim4dasude/CustomerChat",
+    title: "CustomerChat: IT support RAG chatbot",
+    stack: "FastAPI, Next.js, Pinecone, GPT-4",
+    description:
+      "A RAG-powered IT support chatbot using Pinecone and GPT-4, with semantic search, session management and sentiment analysis.",
+    tagline: "Answers from your knowledge base, with sources and a frustration meter.",
+    outcomeLine: "Contextual IT support answers grounded in knowledge base articles, with the sources shown.",
+    tags: ["RAG", "Pinecone", "GPT-4", "Full stack"],
+    overview:
+      "CustomerChat is a full-stack IT support chatbot. It finds the knowledge base articles most relevant to a question with semantic search in Pinecone, and GPT-4 writes a contextual answer from them. Sessions keep conversation history, each answer lists the articles it used, and the system scores how frustrated the user sounds.",
+    problem:
+      "Support teams answer the same questions repeatedly, and a bare chatbot either hallucinates or ignores the company's own articles. The bot needed to answer from the knowledge base, show where the answer came from, remember the conversation and notice when a user is getting frustrated.",
+    approach: [
+      {
+        title: "Index the knowledge base",
+        body: "Articles are embedded and stored in Pinecone, with an admin endpoint to re-index the whole knowledge base when it changes.",
+      },
+      {
+        title: "Retrieve, then generate",
+        body: "A question is matched to the most relevant articles by vector similarity, and GPT-4 answers using that context.",
+      },
+      {
+        title: "Keep sessions and show sources",
+        body: "Chat sessions persist with their history, and every answer is shown with the knowledge base articles that were used.",
+      },
+      {
+        title: "Measure frustration",
+        body: "A sentiment step scores user frustration from 0 to 1 in real time, so a conversation that is going badly can be spotted.",
+      },
+    ],
+    architecture: {
+      summary: "A Next.js chat client over a FastAPI backend, with Pinecone for retrieval and GPT-4 for the answer.",
+      layers: [
+        { name: "Client", tech: "Next.js, Tailwind", detail: "Responsive chat interface with Markdown rendering." },
+        { name: "API", tech: "FastAPI", detail: "Chat, session and admin re-index endpoints." },
+        { name: "Retrieval", tech: "Pinecone", detail: "Semantic search over embedded knowledge base articles." },
+        { name: "Generation", tech: "GPT-4", detail: "Answers written from the retrieved articles." },
+        { name: "Sessions and sentiment", tech: "Session store", detail: "Conversation history and a 0 to 1 frustration score." },
+      ],
+    },
+    features: [
+      "Semantic search across knowledge base articles",
+      "Persistent chat sessions with history",
+      "Real-time frustration score from 0 to 1",
+      "Source tracking for each answer, plus Markdown-formatted replies",
+      "Admin endpoint to re-index the knowledge base",
+    ],
+    challenges: [
+      {
+        problem: "Keeping answers tied to the knowledge base.",
+        solution: "Generation uses the retrieved articles as context, and each answer displays the sources it used.",
+      },
+    ],
+    outcomes: [
+      "A working support chatbot with retrieval, sessions, sources and sentiment",
+      "A re-indexing path so the knowledge base can change without redeploying",
+    ],
+    learnings: [
+      "Showing sources is what makes a support bot trustworthy.",
+      "A simple sentiment score is a useful escalation signal.",
+    ],
+    next: ["Use the frustration score to hand over to a human agent", "Evaluate answer quality against known support tickets"],
+  },
+  {
+    slug: "autodocx",
+    repo: "https://github.com/pratim4dasude/AutoDocX",
+    title: "AutoDocX: documentation from code",
+    stack: "Python, FastAPI, Streamlit, OpenAI or Anthropic",
+    description:
+      "A developer-documentation engine that scans a codebase, analyses it with an LLM and generates versioned, self-contained HTML docs.",
+    tagline: "Stop writing documentation. Start shipping code.",
+    outcomeLine: "Documentation generated from the code on every sync, so it always matches what the code does.",
+    tags: ["LLM", "Developer tools", "FastAPI", "Automation"],
+    image: {
+      src: "/projects/autodocx.jpg",
+      alt: "An AutoDocX generated documentation page with navigation, overview and project statistics",
+      label: "docs",
+      caption: "An auto-generated documentation page: overview, navigation and project statistics.",
+    },
+    overview:
+      "AutoDocX reads every file in a project, extracts structure, and parses Python with the AST to find classes, functions, routes, imports and dependencies. An LLM then writes human-readable summaries, flow explanations and risk notes, and the tool renders a self-contained HTML documentation site with navigation, a table of contents and an API reference.",
+    problem:
+      "Code changes fast and documentation does not. Within weeks the docs are wrong: functions are renamed, routes are added and the architecture shifts while nobody updates the README. Documentation has to be generated from the code, on every sync, to stay true.",
+    approach: [
+      {
+        title: "Scan and parse the project",
+        body: "Walk the project, record file hashes as change signatures, and use Python's AST to extract the structure: routes, classes, functions and imports.",
+      },
+      {
+        title: "Let an LLM explain it",
+        body: "Send the extracted structure to an LLM (OpenAI or Anthropic) to produce summaries, flow explanations and risk notes in plain language.",
+      },
+      {
+        title: "Detect what changed",
+        body: "Compare the current state against the last documented state with file hashes, so only real changes trigger a new version.",
+      },
+      {
+        title: "Generate and version the docs",
+        body: "Render one self-contained HTML file with navigation and an API reference, and keep every sync as a version so older docs are never overwritten. Pasted runtime screenshots can enrich the context.",
+      },
+    ],
+    architecture: {
+      summary: "A scanner and parser feed an LLM, and a renderer writes versioned HTML. A Streamlit app drives it through a FastAPI backend.",
+      layers: [
+        { name: "Scanner", tech: "File hashing", detail: "Reads the project and computes change signatures." },
+        { name: "Parser", tech: "Python AST", detail: "Extracts classes, functions, routes, imports and dependencies." },
+        { name: "Analysis", tech: "OpenAI or Anthropic", detail: "Summaries, flow explanations and risk notes." },
+        { name: "Renderer", tech: "HTML", detail: "A self-contained documentation page with navigation and API reference." },
+        { name: "App", tech: "Streamlit + FastAPI", detail: "A UI to scan, review and sync, with version history on disk." },
+      ],
+    },
+    features: [
+      "AST-based understanding of Python code",
+      "Change detection through file hashes",
+      "Self-contained HTML output with table of contents and API reference",
+      "Version history for every sync",
+      "Screenshot context blocks for richer documentation",
+    ],
+    challenges: [
+      {
+        problem: "Regenerating everything on every run is slow and noisy.",
+        solution: "File hashes detect what actually changed, so a sync produces a new version only when the code has changed.",
+      },
+    ],
+    outcomes: [
+      "A working docs generator with a UI, an API and versioned HTML output",
+      "One-click launchers for Windows and macOS",
+    ],
+    learnings: [
+      "Parse structure with code first, then let the model explain it.",
+      "Versioning generated docs makes them safe to regenerate.",
+    ],
+    next: ["Support more languages than Python", "Add a diff view between documentation versions"],
+  },
+  {
+    slug: "ppe-detection",
+    repo: "https://github.com/pratim4dasude/Site_Safety_equipments",
+    title: "Site safety PPE detection",
+    stack: "YOLO, OpenCV, Python",
+    description:
+      "A YOLO-based video detector that flags whether people on a site are wearing the right safety equipment.",
+    tagline: "Spot missing hard hats, vests and masks in video.",
+    outcomeLine: "Draws green boxes for compliant equipment and red boxes for missing equipment, on live video.",
+    tags: ["Object detection", "YOLO", "OpenCV", "Safety"],
+    overview:
+      "A detector built while learning YOLO. It runs a YOLO model with ten safety classes over a video or webcam stream and draws a labelled box on each detection: green for equipment that is worn, red for equipment that is missing, and blue for everything else. The repository also includes the SORT tracker for following people between frames.",
+    problem:
+      "On a work site, whether a person is wearing a hard hat, a vest or a mask is a safety question, and checking it by eye does not scale. A detector that separates \"wearing\" from \"missing\" for each person turns video into something a safety team can act on.",
+    approach: [
+      {
+        title: "Use a YOLO model with PPE classes",
+        body: "The model detects ten classes: Hardhat, Mask, Safety Vest, their \"NO-\" counterparts, Person, Safety Cone, machinery and vehicle.",
+      },
+      {
+        title: "Threshold on confidence",
+        body: "Only detections above 0.5 confidence are drawn, to keep the display readable.",
+      },
+      {
+        title: "Colour by compliance",
+        body: "Worn equipment is green, missing equipment is red and other objects are blue, so a violation stands out at a glance.",
+      },
+      {
+        title: "Read from video or webcam",
+        body: "OpenCV reads frames from a video file or a webcam, and the box and label are drawn on each frame in real time.",
+      },
+    ],
+    architecture: {
+      summary: "Frames in, detections out, coloured by whether the equipment is worn.",
+      layers: [
+        { name: "Video input", tech: "OpenCV", detail: "Frames from a video file or webcam." },
+        { name: "Detector", tech: "YOLO (Ultralytics)", detail: "Ten safety classes with a confidence score." },
+        { name: "Rules", tech: "Class and threshold", detail: "Keep detections above 0.5 and group them as worn, missing or other." },
+        { name: "Overlay", tech: "cvzone", detail: "Coloured boxes with class and confidence labels." },
+        { name: "Tracking", tech: "SORT", detail: "A tracker included in the repository for following people across frames." },
+      ],
+    },
+    features: [
+      "Ten safety classes, including explicit \"NO-Hardhat\", \"NO-Mask\" and \"NO-Safety Vest\"",
+      "Colour-coded boxes: green worn, red missing, blue other",
+      "Runs on video files or a live webcam",
+    ],
+    challenges: [
+      {
+        problem: "Telling worn equipment from missing equipment.",
+        solution: "The model has separate classes for missing items, and the display colours them red so a violation is obvious.",
+      },
+    ],
+    outcomes: [
+      "A working real-time PPE detector over video",
+      "A clear visual convention for compliance versus violation",
+    ],
+    learnings: [
+      "Explicit negative classes make compliance checks simpler than inferring absence.",
+      "A confidence threshold is the simplest lever for a cleaner display.",
+    ],
+    next: ["Count violations per person with the SORT tracker", "Add a sample output clip with detections drawn"],
+  },
 ];
+
+// Display order: vision flagship first, then the work with the strongest public proof, then the rest.
+const ORDER = [
+  "site-crack-segmentation",
+  "wardrobe-recommendation-engine",
+  "flux-fill-controlnet-inpainting",
+  "echoseek",
+  "ai-builder",
+  "pdreader",
+  "finance-ai-assistant",
+  "customerchat",
+  "autodocx",
+  "ppe-detection",
+  "retina-vein-segmentation",
+  "white-balance-regression",
+  "retail-demand-forecasting",
+  "order-amount-prediction",
+];
+const rank = (slug: string) => {
+  const i = ORDER.indexOf(slug);
+  return i === -1 ? ORDER.length : i;
+};
+
+export const projects: Project[] = [...allProjects].sort((a, b) => rank(a.slug) - rank(b.slug));
 
 export function getProject(slug: string) {
   return projects.find((p) => p.slug === slug);
