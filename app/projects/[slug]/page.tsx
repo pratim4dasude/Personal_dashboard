@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { ReactNode } from "react";
 import ArchitectureDiagram from "../../components/ArchitectureDiagram";
+import PackageCallout from "../../components/project/PackageCallout";
 import ReadingProgress from "../../components/ReadingProgress";
 import TableOfContents, { type TocItem } from "../../components/TableOfContents";
 import BBox from "../../components/ui/BBox";
@@ -166,6 +167,7 @@ export default async function ProjectPage({ params }: PageProps<"/projects/[slug
                 ))}
               </div>
             )}
+            {project.package && <PackageCallout pkg={project.package} />}
           </div>
 
           <Section id="problem" n={n("problem")} title="Problem">

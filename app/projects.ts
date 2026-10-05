@@ -12,6 +12,18 @@ export type Project = {
   pipeline?: PipelineStep[];
   repo?: string;
   links?: { label: string; href: string }[];
+  /** A package published on PyPI for this project. Shown as a highlighted callout. */
+  package?: {
+    name: string;
+    version: string;
+    license: string;
+    python: string;
+    released: string;
+    summary: string;
+    install: string;
+    pypi: string;
+    github: string;
+  };
   title: string;
   stack: string;
   description: string;
@@ -34,12 +46,18 @@ export const projects: Project[] = [
   {
     slug: "site-crack-segmentation",
     repo: "https://github.com/pratim4dasude/oRobotics",
-    links: [
-      {
-        label: "PyPI: finetuning-grounding-dino-sam",
-        href: "https://pypi.org/project/finetuning-grounding-dino-sam/",
-      },
-    ],
+    package: {
+      name: "finetuning-grounding-dino-sam",
+      version: "0.1.2",
+      license: "MIT",
+      python: ">=3.9",
+      released: "May 2026",
+      summary:
+        "The fine-tuning side of this project as a command-line tool. Train Grounding DINO for text-conditioned detection and SAM for segmentation on your own COCO-format dataset, with mixed precision, balanced sampling and automatic checkpoints.",
+      install: "pip install finetuning-grounding-dino-sam",
+      pypi: "https://pypi.org/project/finetuning-grounding-dino-sam/",
+      github: "https://github.com/pratim4dasude/finetuning_grounded_dino_sam",
+    },
     cover: "/vision/crack-1-overlay.jpg",
     title: "Prompt-guided crack and drywall segmentation",
     stack: "Grounding DINO, SAM, PyTorch, Colab",
