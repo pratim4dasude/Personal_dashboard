@@ -1,293 +1,311 @@
 import Link from "next/link";
-import { Card, CardLink } from "./components/Card";
-import Marquee from "./components/Marquee";
+import type { ReactNode } from "react";
 import Reveal from "./components/Reveal";
-import SectionLabel from "./components/SectionLabel";
-import Tag from "./components/Tag";
-import { education, experience, focusAreas, highlights, metrics, profile, skillGroups } from "./data";
+import VisionDemo from "./components/home/VisionDemo";
+import WorkRows from "./components/home/WorkRows";
+import Label from "./components/ui/Label";
+import { education, experience, profile } from "./data";
 import { contributions, featuredRepos, githubStats } from "./opensource";
 import { projects } from "./projects";
 import { research } from "./research";
 
-const buttonPrimary =
-  "rounded-full bg-emerald-300 px-6 py-3 text-sm font-semibold text-stone-950 transition hover:bg-emerald-200";
-const buttonGhost =
-  "rounded-full border border-white/15 px-6 py-3 text-sm font-semibold text-white transition hover:border-emerald-300/50";
+const stack = [
+  "PyTorch",
+  "Grounding DINO",
+  "SAM",
+  "YOLO",
+  "U-Net",
+  "Diffusers",
+  "Flux",
+  "ControlNet",
+  "CLIP",
+  "LangChain",
+  "FastAPI",
+  "Docker",
+];
 
-function SectionHead({
-  label,
-  title,
-  href,
-  cta,
-}: {
-  label: string;
-  title: string;
-  href: string;
-  cta: string;
-}) {
+const facts = [
+  { v: "2+", k: "Years in ML" },
+  { v: String(githubStats.publicRepos), k: "Public repos" },
+  { v: String(contributions.length), k: "Upstream PRs" },
+];
+
+const wrap = "mx-auto w-full max-w-[1440px] px-5 sm:px-8 lg:px-12";
+
+function Head({ index, label, href, cta }: { index: string; label: string; href?: string; cta?: string }) {
   return (
-    <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-      <div>
-        <SectionLabel>{label}</SectionLabel>
-        <h2 className="mt-3 text-3xl font-semibold text-white">{title}</h2>
-      </div>
-      <Link className="text-sm text-emerald-200 transition hover:text-white" href={href}>
-        {cta} &rarr;
-      </Link>
+    <div className="flex items-center justify-between gap-4">
+      <Label index={index} accent>
+        {label}
+      </Label>
+      {href && (
+        <Link href={href} className="label transition-colors hover:!text-accent">
+          {cta} &rarr;
+        </Link>
+      )}
     </div>
   );
 }
 
+function Section({ children, className = "" }: { children: ReactNode; className?: string }) {
+  return <section className={`${wrap} ${className}`}>{children}</section>;
+}
+
 export default function Home() {
-  const allSkills = skillGroups.flatMap((g) => g.items);
-  const half = Math.ceil(allSkills.length / 2);
-
   return (
-    <main id="main" className="relative overflow-hidden text-stone-100">
-      <div
-        aria-hidden
-        className="hero-glow pointer-events-none absolute inset-x-0 top-0 h-[40rem] bg-[radial-gradient(ellipse_50%_55%_at_70%_30%,rgba(52,211,153,0.22),transparent_70%)]"
-      />
-      <div className="relative mx-auto w-full max-w-7xl px-6 sm:px-8 lg:px-12">
-        {/* Hero */}
-        <section className="grid gap-10 pb-16 pt-16 lg:grid-cols-[1.3fr_0.7fr] lg:items-end lg:pt-24">
-          <div className="space-y-6">
-            <p className="font-mono text-sm uppercase tracking-[0.35em] text-emerald-200/75">{profile.role}</p>
-            <h1 className="max-w-4xl bg-gradient-to-br from-white via-white to-emerald-200 bg-clip-text text-5xl font-semibold tracking-tight text-transparent sm:text-6xl lg:text-7xl">
-              Building AI products that move from research to production.
-            </h1>
-            <p className="max-w-2xl text-base leading-8 text-stone-300 sm:text-lg">
-              I work across multimodal learning, retrieval systems, and deployment-focused ML engineering. The goal is straightforward: make advanced models useful, measurable, and reliable in real products.
-            </p>
-            <div className="flex flex-wrap gap-3">
-              <Link href="/projects" className={buttonPrimary}>
-                View projects
-              </Link>
-              <Link href="/contact" className={buttonGhost}>
-                Get in touch
-              </Link>
-              <a href={profile.github.href} target="_blank" rel="noopener noreferrer" className={buttonGhost}>
-                GitHub
-              </a>
-            </div>
-            <div className="flex flex-wrap gap-2 pt-2">
-              {highlights.map((item) => (
-                <Tag key={item}>{item}</Tag>
-              ))}
-            </div>
-          </div>
-
-          <Card className="bg-stone-950/35 shadow-2xl shadow-black/20">
-            <SectionLabel>Snapshot</SectionLabel>
-            <dl className="mt-6 space-y-5">
-              <div>
-                <dt className="text-sm text-stone-400">Location</dt>
-                <dd className="mt-1 text-lg text-white">{profile.location}</dd>
-              </div>
-              <div>
-                <dt className="text-sm text-stone-400">Current focus</dt>
-                <dd className="mt-1 text-lg text-white">{profile.focus}</dd>
-              </div>
-              <div>
-                <dt className="text-sm text-stone-400">Email</dt>
-                <dd className="mt-1 text-emerald-100">
-                  <a className="transition hover:text-white" href={`mailto:${profile.email}`}>
-                    {profile.email}
-                  </a>
-                </dd>
-              </div>
-            </dl>
-          </Card>
-        </section>
-
-        {/* Tech ticker */}
-        <div className="space-y-3 pb-12" aria-label="Technologies I use">
-          <Marquee items={allSkills.slice(0, half)} />
-          <Marquee items={allSkills.slice(half)} reverse />
+    <main id="main" className="overflow-x-clip">
+      {/* HERO */}
+      <Section className="pt-8 sm:pt-10 lg:pt-12">
+        <div className="flex flex-wrap items-center justify-between gap-4">
+          <p className="label inline-flex items-center gap-2.5 border border-line px-3 py-1.5 !text-fg">
+            <span aria-hidden className="pulse-dot h-1.5 w-1.5 bg-accent" />
+            Available for work
+          </p>
+          <p className="label">
+            {profile.location} / {new Date().getFullYear()}
+          </p>
         </div>
 
-        {/* Metrics */}
-        <section className="grid gap-4 border-y border-white/10 py-8 sm:grid-cols-3">
-          {metrics.map((metric, i) => (
-            <Reveal key={metric.label} delay={i * 100}>
-              <div className="rounded-[1.5rem] border border-white/8 bg-white/5 p-5">
-                <p className="text-3xl font-semibold text-white">{metric.value}</p>
-                <p className="mt-2 text-sm leading-6 text-stone-300">{metric.label}</p>
+        <h1 className="font-display mt-10 text-[clamp(3.2rem,9.6vw,9.25rem)] sm:mt-10">
+          <span className="block">Machines that</span>
+          <span className="block">
+            <span className="font-emph pr-[0.06em] text-accent">see</span> what matters.
+          </span>
+        </h1>
+
+        <div className="mt-14 grid gap-14 lg:mt-20 lg:grid-cols-12 lg:gap-12">
+          <div className="flex flex-col justify-between gap-12 lg:col-span-5">
+            <div>
+              <p className="label !text-fg">Computer vision &amp; AI engineer</p>
+              <p className="mt-6 max-w-md text-lg leading-relaxed text-muted sm:text-xl">
+                I fine-tune detectors, segmenters and diffusion models on narrow, unglamorous targets, then wrap them in
+                APIs that other people can rely on.
+              </p>
+              <div className="mt-9 flex flex-wrap items-center gap-x-8 gap-y-4">
+                <Link
+                  href="/projects"
+                  className="group inline-flex items-center gap-3 bg-accent px-5 py-3 font-mono text-[11px] uppercase tracking-[0.18em] text-accent-ink transition-transform hover:-translate-y-0.5"
+                >
+                  See the work
+                  <span aria-hidden className="transition-transform group-hover:translate-x-1">
+                    &rarr;
+                  </span>
+                </Link>
+                <Link
+                  href="/contact"
+                  className="font-mono text-[11px] uppercase tracking-[0.18em] text-fg underline decoration-line-strong underline-offset-[8px] transition-colors hover:decoration-accent"
+                >
+                  Get in touch
+                </Link>
               </div>
-            </Reveal>
+            </div>
+
+            <dl className="grid grid-cols-3 border-t border-line">
+              {facts.map((f, i) => (
+                <div key={f.k} className={`pt-5 ${i > 0 ? "border-l border-line pl-4 sm:pl-6" : ""}`}>
+                  <dd className="font-display text-5xl sm:text-6xl">{f.v}</dd>
+                  <dt className="label mt-3 !text-[10px]">{f.k}</dt>
+                </div>
+              ))}
+            </dl>
+          </div>
+
+          <div className="lg:col-span-7 lg:pl-6 xl:pl-12">
+            <div className="mx-auto max-w-[640px] lg:mx-0 lg:ml-auto">
+              <VisionDemo />
+            </div>
+          </div>
+        </div>
+      </Section>
+
+      {/* STACK LINE */}
+      <div className="mt-20 border-y border-line lg:mt-28">
+        <p className={`${wrap} py-5 font-mono text-[11px] uppercase leading-loose tracking-[0.2em] text-muted`}>
+          {stack.map((s, i) => (
+            <span key={s}>
+              {s}
+              {i < stack.length - 1 && <span className="mx-3 text-accent sm:mx-4">/</span>}
+            </span>
           ))}
-        </section>
+        </p>
+      </div>
 
-        {/* About */}
-        <Reveal>
-          <section className="grid gap-6 pt-16 lg:grid-cols-[0.9fr_1.1fr]">
-            <Card>
-              <SectionLabel>About</SectionLabel>
-              <h2 className="mt-4 text-2xl font-semibold text-white">Engineering with an ML product mindset</h2>
-              <p className="mt-4 text-sm leading-7 text-stone-300 sm:text-base">
-                My work sits between model experimentation and shipping systems that other teams can depend on: training loops, evaluation pipelines, retrieval quality, backend APIs, and the product surface that exposes model capabilities cleanly.
+      {/* WORK */}
+      <Section className="pt-24 lg:pt-36">
+        <Head index="01" label="Selected work" href="/projects" cta="All projects" />
+        <h2 className="font-display mt-8 max-w-4xl text-[clamp(2.4rem,6vw,5.5rem)]">
+          Models that leave the <span className="font-emph text-accent">notebook</span>.
+        </h2>
+        <div className="mt-14 lg:mt-20">
+          <WorkRows projects={projects} />
+        </div>
+      </Section>
+
+      {/* RESEARCH */}
+      <Section className="pt-24 lg:pt-40">
+        <div className="grid gap-10 lg:grid-cols-12 lg:gap-12">
+          <div className="lg:col-span-4">
+            <div className="lg:sticky lg:top-28">
+              <Head index="02" label="Research" />
+              <h2 className="font-display mt-8 text-[clamp(2.4rem,4.6vw,4.4rem)]">
+                Questions I keep <span className="font-emph text-accent">testing</span>.
+              </h2>
+              <p className="mt-6 max-w-xs text-muted">
+                Applied experiments and open implementations. Not papers, and labelled that way.
               </p>
-              <p className="mt-4 text-sm text-stone-400">
-                {education.degree}, {education.school} ({education.period}), CGPA {education.cgpa}.
-              </p>
-              <Link href="/about" className="mt-5 inline-block text-sm text-emerald-200 transition hover:text-white">
-                More about me &rarr;
+              <Link href="/research" className="label mt-8 inline-block transition-colors hover:!text-accent">
+                All research &rarr;
               </Link>
-            </Card>
-            <div className="grid gap-4 sm:grid-cols-3">
-              {focusAreas.map((area) => (
-                <Card key={area.title} className="bg-stone-950/35">
-                  <h3 className="text-lg font-semibold text-white">{area.title}</h3>
-                  <p className="mt-3 text-sm leading-7 text-stone-300">{area.description}</p>
-                </Card>
-              ))}
             </div>
-          </section>
-        </Reveal>
-
-        {/* Experience */}
-        <Reveal>
-          <section className="pt-16">
-            <SectionHead label="Experience" title="Where I have worked" href="/experience" cta="Full experience" />
-            <div className="mt-6 grid gap-4 lg:grid-cols-2">
-              {experience.map((item) => (
-                <CardLink key={item.slug} href={`/experience/${item.slug}`}>
-                  <div className="flex flex-col gap-1 sm:flex-row sm:items-start sm:justify-between">
+          </div>
+          <ul className="border-b border-line lg:col-span-8">
+            {research.map((r, i) => (
+              <li key={r.slug}>
+                <Reveal>
+                  <a
+                    href={r.repo}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group grid gap-3 border-t border-line py-7 transition-colors hover:bg-white/[0.015] sm:grid-cols-[3rem_1fr_auto] sm:gap-6"
+                  >
+                    <span className="label">{String(i + 1).padStart(2, "0")}</span>
                     <div>
-                      <h3 className="text-xl font-semibold text-white">{item.role}</h3>
-                      <p className="mt-1 text-sm text-emerald-100">{item.company}</p>
+                      <p className="label !text-accent">{r.area}</p>
+                      <h3 className="mt-2 text-xl font-light tracking-tight transition-transform duration-500 group-hover:translate-x-1.5 sm:text-2xl">
+                        {r.title}
+                      </h3>
+                      <p className="mt-3 max-w-xl text-sm leading-relaxed text-muted">{r.summary}</p>
+                      <p className="label mt-4 !text-[10px]">{r.tags.join("  /  ")}</p>
                     </div>
-                    <p className="font-mono text-xs uppercase tracking-[0.22em] text-stone-400">{item.period}</p>
-                  </div>
-                  <ul className="mt-4 list-disc space-y-1 pl-5 text-sm text-stone-300 marker:text-emerald-300/60">
-                    {item.highlights.slice(0, 3).map((h) => (
-                      <li key={h}>{h}</li>
-                    ))}
-                  </ul>
-                  <span className="mt-5 inline-block text-sm font-medium text-emerald-200 transition group-hover:translate-x-1">
-                    Full details &rarr;
-                  </span>
-                </CardLink>
-              ))}
-            </div>
-          </section>
-        </Reveal>
-
-        {/* Projects */}
-        <Reveal>
-          <section className="pt-16">
-            <SectionHead label="Selected Projects" title="Systems built around applied ML" href="/projects" cta="All projects" />
-            <div className="mt-6 grid gap-4 lg:grid-cols-3">
-              {projects.map((project, index) => (
-                <CardLink key={project.slug} href={`/projects/${project.slug}`}>
-                  <p className="font-mono text-xs uppercase tracking-[0.25em] text-emerald-200/65">Project 0{index + 1}</p>
-                  <h3 className="mt-4 text-xl font-semibold text-white">{project.title}</h3>
-                  <p className="mt-2 text-sm text-emerald-100">{project.stack}</p>
-                  <p className="mt-4 text-sm leading-7 text-stone-300">{project.tagline}</p>
-                  <span className="mt-6 inline-block text-sm font-medium text-emerald-200 transition group-hover:translate-x-1">
-                    Read the full write-up &rarr;
-                  </span>
-                </CardLink>
-              ))}
-            </div>
-          </section>
-        </Reveal>
-
-        {/* Research */}
-        <Reveal>
-          <section className="pt-16">
-            <SectionHead label="Research" title="Experiments and applied research" href="/research" cta="All research" />
-            <div className="mt-6 grid gap-4 md:grid-cols-2">
-              {research.slice(0, 4).map((item) => (
-                <CardLink key={item.slug} href="/research">
-                  <p className="font-mono text-xs uppercase tracking-[0.25em] text-emerald-200/65">{item.area}</p>
-                  <h3 className="mt-3 text-lg font-semibold text-white">{item.title}</h3>
-                  <p className="mt-3 text-sm leading-7 text-stone-300">{item.summary}</p>
-                  <div className="mt-4 flex flex-wrap gap-2">
-                    {item.tags.slice(0, 3).map((t) => (
-                      <Tag key={t}>{t}</Tag>
-                    ))}
-                  </div>
-                </CardLink>
-              ))}
-            </div>
-          </section>
-        </Reveal>
-
-        {/* Open source */}
-        <Reveal>
-          <section className="pt-16">
-            <SectionHead label="Open Source" title="Contributions and public work" href="/open-source" cta="See all" />
-            <div className="mt-6 grid gap-4 lg:grid-cols-[1fr_1fr]">
-              <div className="space-y-4">
-                {contributions.map((c) => (
-                  <a key={c.url} href={c.url} target="_blank" rel="noopener noreferrer" className="group block">
-                    <Card className="transition duration-300 group-hover:-translate-y-1 group-hover:border-emerald-300/40">
-                      <div className="flex items-center justify-between gap-3">
-                        <p className="font-mono text-sm text-emerald-100">{c.repo}</p>
-                        <span className="rounded-full border border-white/15 px-3 py-1 text-xs text-stone-300">{c.status}</span>
-                      </div>
-                      <h3 className="mt-3 text-base font-semibold text-white">{c.title}</h3>
-                    </Card>
+                    <span
+                      aria-hidden
+                      className="label hidden transition-all duration-500 group-hover:translate-x-1 group-hover:-translate-y-1 group-hover:!text-accent sm:block"
+                    >
+                      &#8599;
+                    </span>
                   </a>
-                ))}
-              </div>
-              <div className="grid gap-4 sm:grid-cols-2">
-                {featuredRepos.slice(0, 4).map((r) => (
-                  <a key={r.name} href={r.url} target="_blank" rel="noopener noreferrer" className="group block">
-                    <Card className="h-full bg-stone-950/35 transition duration-300 group-hover:-translate-y-1 group-hover:border-emerald-300/40">
-                      <h3 className="break-all font-mono text-sm text-emerald-100">{r.name}</h3>
-                      <p className="mt-2 line-clamp-3 text-sm leading-6 text-stone-300">{r.description}</p>
-                    </Card>
-                  </a>
-                ))}
-              </div>
-            </div>
+                </Reveal>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </Section>
+
+      {/* OPEN SOURCE */}
+      <Section className="pt-24 lg:pt-40">
+        <Head index="03" label="Open source" href="/open-source" cta="All contributions" />
+        <div className="mt-10 grid gap-12 lg:grid-cols-12 lg:gap-12">
+          <Reveal className="lg:col-span-5">
+            <p className="font-display text-[clamp(7rem,20vw,16rem)] leading-[0.8] text-accent">{githubStats.publicRepos}</p>
+            <p className="label mt-6 !text-fg">Public repositories</p>
             <a
-              className="mt-4 inline-block text-sm text-emerald-200 transition hover:text-white"
               href={githubStats.profile}
               target="_blank"
               rel="noopener noreferrer"
+              className="mt-3 inline-block font-mono text-[11px] uppercase tracking-[0.18em] text-muted underline decoration-line-strong underline-offset-[6px] transition-colors hover:text-fg hover:decoration-accent"
             >
-              Browse all {githubStats.publicRepos} repositories on GitHub &rarr;
+              github.com/{githubStats.username}
             </a>
-          </section>
-        </Reveal>
+          </Reveal>
 
-        {/* Skills */}
-        <Reveal>
-          <section className="pt-16">
-            <SectionHead label="Skills" title="Tools I work with" href="/skills" cta="Explore skills" />
-            <div className="mt-6 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-              {skillGroups.map((group) => (
-                <Card key={group.label} className="bg-stone-950/35">
-                  <h3 className="text-sm font-semibold uppercase tracking-[0.18em] text-white/90">{group.label}</h3>
-                  <div className="mt-4 flex flex-wrap gap-2">
-                    {group.items.slice(0, 5).map((s) => (
-                      <Tag key={s}>{s}</Tag>
-                    ))}
-                  </div>
-                </Card>
+          <div className="lg:col-span-7">
+            <p className="label mb-4">Upstream pull requests</p>
+            <ul className="mb-14 border-b border-line">
+              {contributions.map((c) => (
+                <li key={c.url}>
+                  <a
+                    href={c.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group grid gap-2 border-t border-line py-5 sm:grid-cols-[1fr_auto] sm:gap-8"
+                  >
+                    <div>
+                      <p className="font-mono text-[12px] tracking-[0.04em] text-accent">{c.repo}</p>
+                      <p className="mt-2 text-base font-light leading-snug transition-transform duration-500 group-hover:translate-x-1.5">
+                        {c.title}
+                      </p>
+                    </div>
+                    <p className="label sm:text-right">{c.status}</p>
+                  </a>
+                </li>
               ))}
-            </div>
-          </section>
-        </Reveal>
+            </ul>
 
-        {/* CTA */}
+            <p className="label mb-4">Selected repositories</p>
+            <ul className="border-b border-line">
+              {featuredRepos.map((r) => (
+                <li key={r.name}>
+                  <a
+                    href={r.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group flex items-baseline justify-between gap-4 border-t border-line py-3.5"
+                  >
+                    <span className="break-all font-mono text-[13px] transition-colors group-hover:text-accent">{r.name}</span>
+                    <span className="label hidden shrink-0 !text-[10px] sm:block">{r.tags.join(" / ")}</span>
+                    <span aria-hidden className="label shrink-0 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5">
+                      &#8599;
+                    </span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </Section>
+
+      {/* ABOUT */}
+      <Section className="pt-28 lg:pt-44">
+        <Head index="04" label="About" href="/about" cta="More" />
         <Reveal>
-          <section className="pt-16">
-            <Card className="flex flex-col items-start gap-4 bg-emerald-300/10 sm:flex-row sm:items-center sm:justify-between">
-              <div>
-                <h2 className="text-2xl font-semibold text-white">Let&apos;s build something.</h2>
-                <p className="mt-2 text-stone-300">Open to ML engineering roles and interesting collaborations.</p>
-              </div>
-              <Link href="/contact" className={buttonPrimary}>
-                Contact me
-              </Link>
-            </Card>
-          </section>
+          <p className="font-display mt-10 max-w-6xl text-[clamp(1.9rem,4.6vw,4.4rem)] !leading-[1.08] text-muted">
+            <span className="text-fg">I work where models meet messy reality:</span> segmenting cracks and drywall seams
+            with fine-tuned Grounding DINO and SAM, adapting diffusion models, and building the{" "}
+            <span className="font-emph text-accent">retrieval and APIs</span> around them so they ship.
+          </p>
         </Reveal>
-      </div>
+        <p className="label mt-10">
+          {education.degree} / KIIT / {education.period}
+        </p>
+      </Section>
+
+      {/* EXPERIENCE */}
+      <Section className="pt-20 lg:pt-28">
+        <ul className="border-b border-line">
+          {experience.map((e) => (
+            <li key={e.slug}>
+              <Link
+                href={`/experience/${e.slug}`}
+                className="group grid gap-2 border-t border-line py-6 sm:grid-cols-12 sm:items-baseline sm:gap-6"
+              >
+                <p className="label sm:col-span-3">{e.period}</p>
+                <p className="text-xl font-light tracking-tight transition-transform duration-500 group-hover:translate-x-1.5 sm:col-span-4 sm:text-2xl">
+                  {e.role}
+                </p>
+                <p className="text-muted sm:col-span-4">{e.company}</p>
+                <span aria-hidden className="label hidden text-right transition-transform group-hover:translate-x-1 group-hover:!text-accent sm:col-span-1 sm:block">
+                  &rarr;
+                </span>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </Section>
+
+      {/* CLOSING */}
+      <Section className="py-24 lg:py-36">
+        <Reveal>
+          <p className="font-display max-w-4xl text-[clamp(2rem,5vw,4.6rem)]">
+            Have a vision problem worth <span className="font-emph text-accent">solving</span>?
+          </p>
+          <a
+            href={`mailto:${profile.email}`}
+            className="mt-8 inline-block font-mono text-sm tracking-[0.06em] underline decoration-line-strong underline-offset-[8px] transition-colors hover:text-accent hover:decoration-accent sm:text-base"
+          >
+            {profile.email}
+          </a>
+        </Reveal>
+      </Section>
     </main>
   );
 }
