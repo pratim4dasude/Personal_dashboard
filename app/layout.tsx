@@ -1,24 +1,28 @@
 import type { Metadata } from "next";
-import { IBM_Plex_Mono, Space_Grotesk } from "next/font/google";
+import { DM_Mono, Inter, Instrument_Serif } from "next/font/google";
 import "./globals.css";
-import SiteHeader from "./components/SiteHeader";
 import SiteFooter from "./components/SiteFooter";
+import SiteHeader from "./components/SiteHeader";
 
-const spaceGrotesk = Space_Grotesk({
-  variable: "--font-sans-body",
+const inter = Inter({ variable: "--font-inter", subsets: ["latin"] });
+
+const instrument = Instrument_Serif({
+  variable: "--font-instrument",
   subsets: ["latin"],
+  weight: "400",
+  style: ["normal", "italic"],
 });
 
-const ibmPlexMono = IBM_Plex_Mono({
-  variable: "--font-mono-body",
+const dmMono = DM_Mono({
+  variable: "--font-dm-mono",
   subsets: ["latin"],
-  weight: ["400", "500"],
+  weight: ["300", "400", "500"],
 });
 
 export const metadata: Metadata = {
-  title: "Pratim Dasude | ML Engineer",
+  title: "Pratim Dasude | Vision & AI Engineer",
   description:
-    "Portfolio dashboard for Pratim Dasude, focused on multimodal AI, computer vision, retrieval systems, and production ML engineering.",
+    "Computer vision and AI engineer building segmentation, detection, diffusion and multimodal retrieval systems that ship to production.",
 };
 
 export default function RootLayout({
@@ -27,14 +31,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="en"
-      className={`${spaceGrotesk.variable} ${ibmPlexMono.variable} antialiased`}
-    >
-      <body className="min-h-screen flex flex-col">
+    <html lang="en" className={`${inter.variable} ${instrument.variable} ${dmMono.variable}`}>
+      <body className="flex min-h-screen flex-col">
         <a
           href="#main"
-          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-full focus:bg-emerald-300 focus:px-4 focus:py-2 focus:text-stone-950"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[70] focus:bg-accent focus:px-4 focus:py-2 focus:text-accent-ink"
         >
           Skip to content
         </a>

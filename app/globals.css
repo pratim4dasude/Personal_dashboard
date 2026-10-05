@@ -1,17 +1,37 @@
 @import "tailwindcss";
 
+/*
+  Design system: "machine vision".
+  Near-black canvas, ONE accent (detection lime), editorial serif italic for emphasis,
+  monospace for labels/telemetry. No gradients-as-decoration, no glass cards.
+*/
 :root {
-  --background: #091310;
-  --foreground: #f5f5f4;
-  --muted: #cfc9c2;
+  --bg: #0a0a0a;
+  --surface: #111111;
+  --surface-2: #171717;
+  --line: rgba(255, 255, 255, 0.1);
+  --line-strong: rgba(255, 255, 255, 0.2);
+  --fg: #ededed;
+  --muted: #8d8d8d;
+  --accent: #c6ff3d;
+  --accent-ink: #0a0a0a;
+  --mask: #ff4d3d; /* segmentation-mask red, used sparingly */
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-fg: var(--fg);
   --color-muted: var(--muted);
-  --font-sans: var(--font-sans-body);
-  --font-mono: var(--font-mono-body);
+  --color-accent: var(--accent);
+  --color-accent-ink: var(--accent-ink);
+  --color-mask: var(--mask);
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-instrument), ui-serif, Georgia, serif;
+  --font-mono: var(--font-dm-mono), ui-monospace, monospace;
 }
 
 * {
@@ -20,16 +40,14 @@
 
 html {
   scroll-behavior: smooth;
+  background: var(--bg);
 }
 
 body {
-  background-color: var(--background);
-  background-image:
-    radial-gradient(ellipse 80% 520px at 50% 0, rgba(52, 211, 153, 0.16), transparent 70%),
-    linear-gradient(180deg, #1a4237 0, #10241f 900px, #091310 2200px);
-  background-repeat: no-repeat;
-  color: var(--foreground);
-  font-family: var(--font-sans-body), sans-serif;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
 }
 
 a {
@@ -38,21 +56,48 @@ a {
 }
 
 ::selection {
-  background: rgba(110, 231, 183, 0.3);
-  color: #ffffff;
+  background: var(--accent);
+  color: var(--accent-ink);
 }
 
 :focus-visible {
-  outline: 2px solid #6ee7b7;
+  outline: 2px solid var(--accent);
   outline-offset: 3px;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
+/* Typography helpers */
+.font-display {
+  font-family: var(--font-sans);
+  font-weight: 300;
+  letter-spacing: -0.04em;
+  line-height: 0.95;
+}
+.font-emph {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+}
+.label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--muted);
 }
 
+/* Film grain over the whole page, very subtle */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 60;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+
+/* Scroll reveal */
 .reveal {
   opacity: 0;
   transform: translateY(18px);
@@ -63,19 +108,13 @@ a {
   transform: none;
 }
 
-@keyframes float-glow {
-  0%, 100% { opacity: 0.55; }
-  50% { opacity: 1; }
-}
-.hero-glow {
-  animation: float-glow 9s ease-in-out infinite;
+/* Scan line used by the vision demos */
+@keyframes scan {
+  from { transform: translateX(-10%); }
+  to { transform: translateX(110%); }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .reveal { opacity: 1; transform: none; transition: none; }
-  .hero-glow { animation: none; }
-}
-
+/* Marquee */
 @keyframes marquee-scroll {
   from { transform: translateX(0); }
   to { transform: translateX(-50%); }
@@ -98,6 +137,16 @@ a {
   animation: skill-float 6s ease-in-out infinite;
 }
 
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.35; }
+}
+.pulse-dot {
+  animation: pulse-dot 1.8s ease-in-out infinite;
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .marquee-track, .skill-float { animation: none; }
+  html { scroll-behavior: auto; }
+  .reveal { opacity: 1; transform: none; transition: none; }
+  .marquee-track, .skill-float, .pulse-dot { animation: none; }
 }
