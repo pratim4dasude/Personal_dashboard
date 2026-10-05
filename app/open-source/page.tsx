@@ -1,9 +1,7 @@
 import type { Metadata } from "next";
-import { Card } from "../components/Card";
-import PageHeader from "../components/PageHeader";
-import Reveal from "../components/Reveal";
-import SectionLabel from "../components/SectionLabel";
-import Tag from "../components/Tag";
+import Label from "../components/ui/Label";
+import PageHero from "../components/pages/PageHero";
+import Shell from "../components/pages/Shell";
 import { contributions, featuredRepos, githubStats, packages } from "../opensource";
 
 export const metadata: Metadata = {
@@ -11,117 +9,121 @@ export const metadata: Metadata = {
   description: "Open-source contributions, public repositories and packages.",
 };
 
-const statusStyle: Record<string, string> = {
-  Open: "border-emerald-300/40 bg-emerald-300/15 text-emerald-100",
-  Merged: "border-violet-300/40 bg-violet-300/15 text-violet-100",
-  Closed: "border-white/15 bg-white/5 text-stone-300",
-};
-
 export default function OpenSourcePage() {
+  const stats = [
+    { value: String(githubStats.publicRepos), label: "public repositories" },
+    { value: String(contributions.length), label: "upstream pull requests" },
+    { value: String(githubStats.followers), label: "followers" },
+  ];
+
   return (
-    <main id="main" className="mx-auto w-full max-w-5xl px-6 py-10 sm:px-8">
-      <PageHeader
+    <Shell>
+      <PageHero
+        index="03"
         label="Open Source"
-        title="Contributions and public work"
         intro="Pull requests to projects I use, plus the repositories I build in the open."
-      />
+        aside={
+          <dl className="flex gap-8 sm:gap-10">
+            {stats.map((s) => (
+              <div key={s.label}>
+                <dd className="font-display text-5xl">{s.value}</dd>
+                <dt className="label mt-2 max-w-[7rem]">{s.label}</dt>
+              </div>
+            ))}
+          </dl>
+        }
+      >
+        Work done <span className="font-emph">in the open</span>.
+      </PageHero>
 
-      <section aria-labelledby="stats" className="grid gap-4 sm:grid-cols-3">
-        <h2 id="stats" className="sr-only">
-          GitHub at a glance
-        </h2>
-        {[
-          { value: String(githubStats.publicRepos), label: "public repositories" },
-          { value: String(contributions.length), label: "upstream pull requests" },
-          { value: String(githubStats.followers), label: "followers" },
-        ].map((s) => (
-          <Card key={s.label} className="bg-stone-950/35">
-            <p className="text-3xl font-semibold text-white">{s.value}</p>
-            <p className="mt-2 text-sm text-stone-300">{s.label}</p>
-          </Card>
-        ))}
-      </section>
-
-      <section className="mt-12">
-        <SectionLabel>Upstream contributions</SectionLabel>
-        <div className="mt-5 space-y-4">
-          {contributions.map((c) => (
-            <Reveal key={c.url}>
-              <a href={c.url} target="_blank" rel="noopener noreferrer" className="group block">
-                <Card className="transition duration-300 group-hover:-translate-y-1 group-hover:border-emerald-300/40">
-                  <div className="flex flex-wrap items-center justify-between gap-3">
-                    <p className="font-mono text-sm text-emerald-100">{c.repo}</p>
-                    <span className={`rounded-full border px-3 py-1 text-xs ${statusStyle[c.status]}`}>{c.status}</span>
-                  </div>
-                  <h3 className="mt-3 text-lg font-semibold text-white">{c.title}</h3>
-                  <p className="mt-2 text-sm leading-7 text-stone-300">{c.description}</p>
-                  <span className="mt-4 inline-block text-sm text-emerald-200 transition group-hover:translate-x-1">
-                    View pull request &rarr;
-                  </span>
-                </Card>
-              </a>
-            </Reveal>
-          ))}
+      <section className="grid gap-8 border-b border-line py-14 lg:grid-cols-12 lg:gap-10">
+        <div className="lg:col-span-4">
+          <Label index="01">Upstream</Label>
         </div>
+        <ul className="lg:col-span-8 [&>li:first-child>a]:pt-0">
+          {contributions.map((c) => (
+            <li key={c.url} className="border-b border-line last:border-b-0">
+              <a href={c.url} target="_blank" rel="noopener noreferrer" className="group block py-8">
+                <p className="label flex items-center justify-between gap-4">
+                  <span className="normal-case tracking-normal text-fg">{c.repo}</span>
+                  <span className={c.status === "Open" ? "text-accent" : ""}>{c.status}</span>
+                </p>
+                <h2 className="mt-4 text-2xl font-light leading-snug tracking-tight transition-colors group-hover:text-accent sm:text-3xl">
+                  {c.title}
+                </h2>
+                <p className="mt-3 max-w-2xl leading-7 text-muted">{c.description}</p>
+                <p className="label mt-5 text-fg">
+                  View pull request <span aria-hidden>&#8599;</span>
+                </p>
+              </a>
+            </li>
+          ))}
+        </ul>
       </section>
 
       {packages.length > 0 && (
-        <section className="mt-12">
-          <SectionLabel>Packages</SectionLabel>
-          <div className="mt-5 grid gap-4 md:grid-cols-2">
+        <section className="grid gap-8 border-b border-line py-14 lg:grid-cols-12 lg:gap-10">
+          <div className="lg:col-span-4">
+            <Label index="02">Packages</Label>
+          </div>
+          <ul className="lg:col-span-8">
             {packages.map((p) => (
-              <Card key={p.name}>
-                <h3 className="text-lg font-semibold text-white">{p.name}</h3>
-                <p className="mt-2 text-sm leading-7 text-stone-300">{p.description}</p>
-                <code className="mt-4 block rounded-xl bg-stone-950/60 px-4 py-2 font-mono text-sm text-emerald-100">
-                  {p.install}
-                </code>
-                <div className="mt-4 flex gap-4 text-sm">
-                  <a className="text-emerald-200 hover:text-white" href={p.pypi} target="_blank" rel="noopener noreferrer">
+              <li key={p.name} className="border-b border-line py-6 first:pt-0 last:border-b-0">
+                <h3 className="text-2xl font-light tracking-tight">{p.name}</h3>
+                <p className="mt-2 leading-7 text-muted">{p.description}</p>
+                <code className="mt-4 block font-mono text-sm text-accent">{p.install}</code>
+                <p className="label mt-4 flex gap-6">
+                  <a className="hover:text-accent" href={p.pypi} target="_blank" rel="noopener noreferrer">
                     PyPI
                   </a>
                   {p.github && (
-                    <a className="text-emerald-200 hover:text-white" href={p.github} target="_blank" rel="noopener noreferrer">
+                    <a className="hover:text-accent" href={p.github} target="_blank" rel="noopener noreferrer">
                       GitHub
                     </a>
                   )}
-                </div>
-              </Card>
+                </p>
+              </li>
             ))}
-          </div>
+          </ul>
         </section>
       )}
 
-      <section className="mt-12">
-        <SectionLabel>Featured repositories</SectionLabel>
-        <div className="mt-5 grid gap-4 md:grid-cols-2">
-          {featuredRepos.map((r) => (
-            <Reveal key={r.name}>
-              <a href={r.url} target="_blank" rel="noopener noreferrer" className="group block h-full">
-                <Card className="h-full transition duration-300 group-hover:-translate-y-1 group-hover:border-emerald-300/40">
-                  <div className="flex items-start justify-between gap-3">
-                    <h3 className="break-all font-mono text-sm text-emerald-100">{r.name}</h3>
-                    <span className="shrink-0 text-xs text-stone-400">{r.language}</span>
-                  </div>
-                  <p className="mt-3 text-sm leading-7 text-stone-300">{r.description}</p>
-                  <div className="mt-4 flex flex-wrap gap-2">
-                    {r.tags.map((t) => (
-                      <Tag key={t}>{t}</Tag>
-                    ))}
-                  </div>
-                </Card>
-              </a>
-            </Reveal>
-          ))}
+      <section className="grid gap-8 py-14 lg:grid-cols-12 lg:gap-10">
+        <div className="lg:col-span-4">
+          <Label index={packages.length > 0 ? "03" : "02"}>Repositories</Label>
         </div>
-        <p className="mt-6 text-sm text-stone-400">
-          More on{" "}
-          <a className="text-emerald-200 hover:text-white" href={githubStats.profile} target="_blank" rel="noopener noreferrer">
-            github.com/{githubStats.username}
-          </a>
-          .
-        </p>
+        <div className="lg:col-span-8">
+          <ul className="border-t border-line">
+            {featuredRepos.map((r) => (
+              <li key={r.name} className="border-b border-line">
+                <a
+                  href={r.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group grid gap-3 py-7 sm:grid-cols-[1fr_1.2fr] sm:gap-8"
+                >
+                  <div>
+                    <h3 className="break-all font-mono text-sm text-fg transition-colors group-hover:text-accent">
+                      {r.name} <span aria-hidden>&#8599;</span>
+                    </h3>
+                    <p className="label mt-2">{r.language}</p>
+                  </div>
+                  <div>
+                    <p className="leading-7 text-muted">{r.description}</p>
+                    <p className="mt-3 font-mono text-xs text-muted/70">{r.tags.join(", ")}</p>
+                  </div>
+                </a>
+              </li>
+            ))}
+          </ul>
+          <p className="label mt-8">
+            More on{" "}
+            <a className="text-fg hover:text-accent" href={githubStats.profile} target="_blank" rel="noopener noreferrer">
+              github.com/{githubStats.username} <span aria-hidden>&#8599;</span>
+            </a>
+          </p>
+        </div>
       </section>
-    </main>
+    </Shell>
   );
 }
