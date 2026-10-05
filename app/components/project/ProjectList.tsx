@@ -38,10 +38,22 @@ export default function ProjectList({ projects }: { projects: Project[] }) {
               className="group block py-8 sm:py-10"
             >
               <div className="flex items-baseline justify-between gap-4">
-                <span className="label">
-                  <span className={active === i ? "text-accent" : "text-fg"}>{String(i + 1).padStart(2, "0")}</span>
-                  <span className="mx-2 text-muted">/</span>
-                  {p.tags[0]}
+                <span className="flex flex-wrap items-center gap-x-4 gap-y-2">
+                  <span className="label">
+                    <span className={active === i ? "text-accent" : "text-fg"}>{String(i + 1).padStart(2, "0")}</span>
+                    <span className="mx-2 text-muted">/</span>
+                    {p.tags[0]}
+                  </span>
+                  {p.package && (
+                    <span
+                      title={`Published on PyPI: ${p.package.name}`}
+                      className="inline-flex items-center gap-1.5 bg-accent px-2 py-0.5 font-mono text-[10px] uppercase tracking-[0.16em] text-accent-ink"
+                    >
+                      <span aria-hidden className="h-1.5 w-1.5 bg-accent-ink" />
+                      PyPI
+                      <span className="sr-only">: published package {p.package.name}</span>
+                    </span>
+                  )}
                 </span>
                 <span className="label hidden sm:block">{p.stack.split(",").slice(0, 3).join(" / ")}</span>
               </div>
