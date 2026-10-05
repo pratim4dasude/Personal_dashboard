@@ -1,14 +1,16 @@
 import type { Metadata } from "next";
 import { IBM_Plex_Mono, Space_Grotesk } from "next/font/google";
 import "./globals.css";
+import SiteHeader from "./components/SiteHeader";
+import SiteFooter from "./components/SiteFooter";
 
 const spaceGrotesk = Space_Grotesk({
-  variable: "--font-geist-sans",
+  variable: "--font-sans-body",
   subsets: ["latin"],
 });
 
 const ibmPlexMono = IBM_Plex_Mono({
-  variable: "--font-geist-mono",
+  variable: "--font-mono-body",
   subsets: ["latin"],
   weight: ["400", "500"],
 });
@@ -27,9 +29,19 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${spaceGrotesk.variable} ${ibmPlexMono.variable} h-full antialiased`}
+      className={`${spaceGrotesk.variable} ${ibmPlexMono.variable} antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-screen flex flex-col">
+        <a
+          href="#main"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-full focus:bg-emerald-300 focus:px-4 focus:py-2 focus:text-stone-950"
+        >
+          Skip to content
+        </a>
+        <SiteHeader />
+        <div className="flex-1">{children}</div>
+        <SiteFooter />
+      </body>
     </html>
   );
 }
