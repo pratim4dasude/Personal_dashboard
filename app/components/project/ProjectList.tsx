@@ -6,12 +6,14 @@ import type { Project } from "../../projects";
 import BBox from "../ui/BBox";
 
 function Preview({ p }: { p: Project }) {
+  const src = p.cover ?? p.image?.src;
+  const label = p.cover ? "cracks" : (p.image?.label ?? p.tags[0]?.toLowerCase());
   return (
-    <BBox label={p.cover ? "cracks" : p.tags[0]?.toLowerCase()} score={p.cover ? undefined : undefined} className="w-full">
-      <div className="relative aspect-square w-full overflow-hidden bg-surface">
-        {p.cover ? (
+    <BBox label={label} className="w-full">
+      <div className="relative aspect-[5/4] w-full overflow-hidden bg-surface">
+        {src ? (
           // eslint-disable-next-line @next/next/no-img-element
-          <img src={p.cover} alt="" className="h-full w-full object-cover" />
+          <img src={src} alt="" className={`h-full w-full object-cover ${p.cover ? "object-top" : ""}`} />
         ) : (
           <div className="flex h-full flex-col justify-between p-6">
             <span className="label">{p.stack}</span>
@@ -28,7 +30,7 @@ export default function ProjectList({ projects }: { projects: Project[] }) {
 
   return (
     <div className="grid gap-12 lg:grid-cols-[minmax(0,1fr)_340px] lg:gap-16 xl:grid-cols-[minmax(0,1fr)_420px]">
-      <ul className="border-t border-line" onMouseLeave={() => setActive(0)}>
+      <ul className="border-t border-line">
         {projects.map((p, i) => (
           <li key={p.slug} className="border-b border-line">
             <Link
@@ -71,9 +73,13 @@ export default function ProjectList({ projects }: { projects: Project[] }) {
                 <p className="max-w-md text-[15px] leading-relaxed text-muted">{p.tagline}</p>
                 <p className="label shrink-0 text-right leading-relaxed">{p.tags.join("  ·  ")}</p>
               </div>
-              {p.cover && (
+              {(p.cover ?? p.image?.src) && (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img src={p.cover} alt="" className="mt-6 aspect-[16/9] w-full object-cover lg:hidden" />
+                <img
+                  src={(p.cover ?? p.image?.src) as string}
+                  alt=""
+                  className="mt-6 aspect-[16/9] w-full object-cover lg:hidden"
+                />
               )}
             </Link>
           </li>

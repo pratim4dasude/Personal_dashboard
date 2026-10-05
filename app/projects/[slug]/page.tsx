@@ -119,6 +119,16 @@ export default async function ProjectPage({ params }: PageProps<"/projects/[slug
             </BBox>
           </div>
         </div>
+      ) : project.image ? (
+        <div className="mx-auto w-full max-w-[1400px] px-6 lg:px-10">
+          <figure>
+            <BBox label={project.image.label} className="mt-6">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={project.image.src} alt={project.image.alt} className="aspect-[5/4] w-full object-cover sm:aspect-[16/9]" />
+            </BBox>
+            <figcaption className="label mt-4">{project.image.caption}</figcaption>
+          </figure>
+        </div>
       ) : (
         <div className="mx-auto w-full max-w-[1400px] px-6 lg:px-10">
           <div className="relative overflow-hidden border border-line bg-surface px-6 py-16 sm:px-12 sm:py-24">
@@ -129,6 +139,18 @@ export default async function ProjectPage({ params }: PageProps<"/projects/[slug
           </div>
         </div>
       )}
+
+      {project.extra?.length ? (
+        <div className="mx-auto w-full max-w-[1400px] space-y-10 px-6 pt-14 lg:px-10">
+          {project.extra.map((e) => (
+            <figure key={e.src}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={e.src} alt={e.alt} loading="lazy" className="w-full border border-line bg-surface" />
+              <figcaption className="label mt-3">{e.caption}</figcaption>
+            </figure>
+          ))}
+        </div>
+      ) : null}
 
       {/* Body */}
       <div className="mx-auto w-full max-w-[1400px] px-6 pt-16 lg:px-10 xl:grid xl:grid-cols-[190px_minmax(0,1fr)] xl:gap-14">

@@ -34,6 +34,21 @@ function VisionMedia() {
   );
 }
 
+function ImageMedia({ p }: { p: Project }) {
+  return (
+    <BBox label={p.image?.label} className="mt-6 lg:mt-0">
+      <div className="relative aspect-[5/4] w-full overflow-hidden bg-surface-2">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={p.image?.src}
+          alt={p.image?.alt ?? ""}
+          className="absolute inset-0 h-full w-full object-cover grayscale-[0.35] transition duration-700 group-hover:scale-[1.03] group-hover:grayscale-0"
+        />
+      </div>
+    </BBox>
+  );
+}
+
 function TypeMedia({ p, index }: { p: Project; index: number }) {
   const stack = p.stack.split(",").map((s) => s.trim());
   return (
@@ -97,7 +112,7 @@ export default function WorkRows({ projects }: { projects: Project[] }) {
                   </span>
                 </span>
               </div>
-              <div className="lg:col-span-5">{isVision(p) ? <VisionMedia /> : <TypeMedia p={p} index={i} />}</div>
+              <div className="lg:col-span-5">{isVision(p) ? <VisionMedia /> : p.image ? <ImageMedia p={p} /> : <TypeMedia p={p} index={i} />}</div>
             </Link>
           </Reveal>
         </li>
