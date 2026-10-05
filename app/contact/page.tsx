@@ -20,7 +20,7 @@ export default function ContactPage() {
           Contact
         </Label>
         <h1 className="font-display mt-8 text-[clamp(2.75rem,8.5vw,8rem)]">
-          Let&apos;s build something <span className="font-emph">that sees</span>.
+          Let&apos;s build something <span className="font-emph text-accent">that sees</span>.
         </h1>
         <a
           href={`mailto:${profile.email}`}

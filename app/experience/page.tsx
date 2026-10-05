@@ -17,7 +17,7 @@ export default function ExperiencePage() {
         label="Experience"
         intro="Where I have built and shipped ML systems. Open a role for the full breakdown."
       >
-        Recent <span className="font-emph">work</span>, in production.
+        Recent <span className="font-emph text-accent">work</span>, in production.
       </PageHero>
 
       <ol>

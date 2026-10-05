@@ -33,7 +33,7 @@ export default function OpenSourcePage() {
           </dl>
         }
       >
-        Work done <span className="font-emph">in the open</span>.
+        Work done <span className="font-emph text-accent">in the open</span>.
       </PageHero>
 
       <section className="grid gap-8 border-b border-line py-14 lg:grid-cols-12 lg:gap-10">

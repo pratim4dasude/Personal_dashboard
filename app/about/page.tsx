@@ -13,7 +13,7 @@ export default function AboutPage() {
   return (
     <Shell>
       <PageHero index="01" label="About">
-        Engineering with an <span className="font-emph">ML product</span> mindset.
+        Engineering with an <span className="font-emph text-accent">ML product</span> mindset.
       </PageHero>
 
       <section className="grid gap-8 border-b border-line py-14 lg:grid-cols-12 lg:gap-10">

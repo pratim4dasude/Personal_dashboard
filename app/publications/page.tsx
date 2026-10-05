@@ -20,7 +20,7 @@ export default function PublicationsPage() {
         label="Publications"
         intro="Three peer-reviewed IEEE conference papers from my undergraduate years, on speech and language models. Open one for the abstract, key facts and the paper itself."
       >
-        Peer-reviewed, <span className="font-emph">in print.</span>
+        Peer-reviewed, <span className="font-emph text-accent">in print.</span>
       </PageHero>
 
       <dl className="grid max-w-xl grid-cols-3 gap-6 border-b border-line pb-10">
