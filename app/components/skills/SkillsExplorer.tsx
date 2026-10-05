@@ -148,7 +148,7 @@ export default function SkillsExplorer({ groups }: { groups: Group[] }) {
       const y1 = y * cp - z1 * sp;
       const z2 = y * sp + z1 * cp;
       const f = 2.6 / (2.6 + z2);
-      const scale = Math.min(w * 0.4, h * 0.44);
+      const scale = Math.min(w * (w < 640 ? 0.22 : 0.3), h * 0.26);
       return { sx: w / 2 + x1 * f * scale, sy: h / 2 + y1 * f * scale, d: z2, s: f };
     };
 
@@ -376,7 +376,7 @@ export default function SkillsExplorer({ groups }: { groups: Group[] }) {
       <div className="mt-8">
         <div
           ref={wrapRef}
-          className="relative h-[420px] w-full overflow-hidden sm:h-[520px] lg:h-[620px]"
+          className="relative h-[520px] w-full overflow-hidden sm:h-[640px] lg:h-[780px]"
         >
           <canvas
             ref={canvasRef}
