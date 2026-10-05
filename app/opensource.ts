@@ -27,10 +27,10 @@ export const contributions: Contribution[] = [
   {
     repo: "huggingface/diffusers",
     title: "New Pipeline: FluxFillControlNetInpaintPipeline for FLUX Fill-Based Inpainting with ControlNet",
-    status: "Closed",
+    status: "Merged",
     url: "https://github.com/huggingface/diffusers/pull/12649",
     description:
-      "Proposed a pipeline that adds ControlNet conditioning to FLUX Fill inpainting in Diffusers.",
+      "Added ControlNet conditioning to FLUX Fill inpainting. Merged into huggingface/diffusers as a community pipeline on 19 Nov 2025.",
   },
   {
     repo: "lllyasviel/IC-Light",

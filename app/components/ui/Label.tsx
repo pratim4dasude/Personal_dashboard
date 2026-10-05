@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 
-/** Numbered mono eyebrow, e.g. "02 / Research". */
+/** Numbered mono eyebrow, e.g. "04 / Publications". */
 export default function Label({
   index,
   children,

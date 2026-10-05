@@ -9,7 +9,7 @@ const links = [
   { n: "01", label: "About", href: "/about" },
   { n: "02", label: "Experience", href: "/experience" },
   { n: "03", label: "Projects", href: "/projects" },
-  { n: "04", label: "Research", href: "/research" },
+  { n: "04", label: "Publications", href: "/publications" },
   { n: "05", label: "Open Source", href: "/open-source" },
   { n: "06", label: "Skills", href: "/skills" },
 ];

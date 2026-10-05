@@ -7,8 +7,7 @@ import Label from "./components/ui/Label";
 import { education, experience, profile, skillGroups } from "./data";
 import { contributions, featuredRepos, githubStats } from "./opensource";
 import { projects } from "./projects";
-import { publications, scholar } from "./publications";
-import { research } from "./research";
+import { papers, scholar } from "./papers";
 
 const stack = [
   "PyTorch",
@@ -177,82 +176,63 @@ export default function Home() {
           Models that leave the <span className="font-emph text-accent">notebook</span>.
         </h2>
         <div className="mt-14 lg:mt-20">
-          <WorkRows projects={projects} />
+          <WorkRows projects={projects.slice(0, 4)} />
         </div>
       </Section>
 
-      {/* RESEARCH */}
+      {/* PUBLICATIONS */}
       <Section className="pt-24 lg:pt-40">
-        <div className="grid gap-10 lg:grid-cols-12 lg:gap-12">
+        <Head index="04" label="Publications" href="/publications" cta="All publications" />
+        <div className="mt-10 grid gap-10 lg:grid-cols-12 lg:gap-10">
           <div className="lg:col-span-4">
-            <div className="lg:sticky lg:top-28">
-              <Head index="04" label="Research" />
-              <h2 className="font-display mt-8 text-[clamp(2.4rem,4.6vw,4.4rem)]">
-                Questions I keep <span className="font-emph text-accent">testing</span>.
-              </h2>
-              <p className="mt-6 max-w-xs text-muted">
-                Applied experiments and open implementations. Not papers, and labelled that way.
+            <Reveal>
+              <p className="font-display text-[clamp(2rem,4vw,3.6rem)] !leading-[1.05]">
+                Peer-reviewed, <span className="font-emph text-accent">in print.</span>
               </p>
-              <Link href="/research" className="label mt-8 inline-block transition-colors hover:!text-accent">
-                All research &rarr;
-              </Link>
-            </div>
+              <p className="mt-6 max-w-sm leading-7 text-muted">
+                Three IEEE conference papers on speech and language models. Each has its abstract, key facts and a link
+                to the paper.
+              </p>
+              <dl className="mt-8 grid max-w-xs grid-cols-3 gap-4">
+                <div>
+                  <dd className="font-display text-4xl">{papers.length}</dd>
+                  <dt className="label mt-2">Papers</dt>
+                </div>
+                <div>
+                  <dd className="font-display text-4xl">{scholar.citations}</dd>
+                  <dt className="label mt-2">Citations</dt>
+                </div>
+                <div>
+                  <dd className="font-display text-4xl">{scholar.hIndex}</dd>
+                  <dt className="label mt-2">h-index</dt>
+                </div>
+              </dl>
+            </Reveal>
           </div>
           <ul className="border-b border-line lg:col-span-8">
-            {research.map((r, i) => (
-              <li key={r.slug}>
-                <Reveal>
-                  <a
-                    href={r.repo}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="group grid gap-3 border-t border-line py-7 transition-colors hover:bg-white/[0.015] sm:grid-cols-[3rem_1fr_auto] sm:gap-6"
-                  >
-                    <span className="label">{String(i + 1).padStart(2, "0")}</span>
-                    <div>
-                      <p className="label !text-accent">{r.area}</p>
-                      <h3 className="mt-2 text-xl font-light tracking-tight transition-transform duration-500 group-hover:translate-x-1.5 sm:text-2xl">
-                        {r.title}
-                      </h3>
-                      <p className="mt-3 max-w-xl text-sm leading-relaxed text-muted">{r.summary}</p>
-                      <p className="label mt-4 !text-[10px]">{r.tags.join("  /  ")}</p>
-                    </div>
-                    <span
-                      aria-hidden
-                      className="label hidden transition-all duration-500 group-hover:translate-x-1 group-hover:-translate-y-1 group-hover:!text-accent sm:block"
-                    >
-                      &#8599;
-                    </span>
-                  </a>
-                </Reveal>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        {/* Publications preview */}
-        <div className="mt-20 border-t border-line pt-10">
-          <div className="flex items-center justify-between gap-4">
-            <p className="label !text-fg">
-              Publications <span className="text-muted">/ {publications.length} papers / {scholar.citations} citations</span>
-            </p>
-            <Link href="/research#publications" className="label transition-colors hover:!text-accent">
-              All &rarr;
-            </Link>
-          </div>
-          <ul className="mt-6 border-b border-line">
-            {publications.map((p) => (
+            {papers.map((p, i) => (
               <li key={p.slug}>
                 <Link
-                  href="/research#publications"
-                  className="group grid gap-2 border-t border-line py-5 sm:grid-cols-12 sm:items-baseline sm:gap-6"
+                  href={`/publications/${p.slug}`}
+                  className="group grid gap-3 border-t border-line py-7 sm:grid-cols-[6rem_1fr_auto] sm:items-baseline sm:gap-6"
                 >
-                  <p className="label sm:col-span-2">{p.venueShort}</p>
-                  <p className="text-lg font-light leading-snug tracking-tight transition-transform duration-500 group-hover:translate-x-1.5 sm:col-span-9">
-                    {p.title}
+                  <p className="label flex gap-3">
+                    <span className="text-accent">{String(i + 1).padStart(2, "0")}</span>
+                    <span>{p.venueShort}</span>
                   </p>
-                  <span aria-hidden className="label hidden text-right group-hover:!text-accent sm:col-span-1 sm:block">
-                    &rarr;
+                  <div>
+                    <p className="text-xl font-light leading-snug tracking-tight transition-transform duration-500 group-hover:translate-x-1.5 sm:text-2xl">
+                      {p.title}
+                    </p>
+                    <p className="label mt-3">
+                      {p.topic} / {p.publisher} / Cited by {p.citations}
+                    </p>
+                  </div>
+                  <span
+                    aria-hidden
+                    className="label hidden transition-all duration-500 group-hover:translate-x-1 group-hover:-translate-y-1 group-hover:!text-accent sm:block"
+                  >
+                    &#8599;
                   </span>
                 </Link>
               </li>
