@@ -153,8 +153,6 @@ export default function SkillsExplorer({ groups }: { groups: Group[] }) {
     };
 
     const compact = () => w < 640;
-    // Last label slot chosen per skill, so labels do not jump around while rotating.
-    const labelPref = new Map<string, number>();
 
     function draw() {
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
@@ -212,58 +210,15 @@ export default function SkillsExplorer({ groups }: { groups: Group[] }) {
       }
       ctx.globalAlpha = 1;
 
-      // labels, placed greedily from the front so nothing overlaps
+      // labels
       const showAll = !compact();
-      const fontPx = compact() ? 10 : 11;
-      ctx.font = `${fontPx}px var(--font-dm-mono), monospace`;
-      const lh = fontPx + 3;
-      type Rect = { x: number; y: number; w: number; h: number };
-      const hit = (r1: Rect, r2: Rect) =>
-        r1.x < r2.x + r2.w && r1.x + r1.w > r2.x && r1.y < r2.y + r2.h && r1.y + r1.h > r2.y;
-      // markers of every named point are obstacles too, so a label never covers another point
-      const taken: Rect[] = labels.map(({ q }) => {
-        const m = base * q.s + 3;
-        return { x: q.sx - m, y: q.sy - m, w: m * 2, h: m * 2 };
-      });
-      const byFront = [...labels].sort((p1, p2) => p1.q.d - p2.q.d);
-      for (const { q, a } of byFront) {
+      ctx.font = `${compact() ? 10 : 11}px var(--font-dm-mono), monospace`;
+      for (const { q, a } of labels) {
         if (q.p.name === cur) continue;
         if (!showAll && !(focusG !== null && q.p.g === focusG)) continue;
-        const tw = ctx.measureText(q.p.name).width;
-        const off = base * q.s + 5;
-        const slots: [number, number][] = [
-          [q.sx + off, q.sy + 3.5], // right
-          [q.sx - off - tw, q.sy + 3.5], // left
-          [q.sx + off, q.sy - 10], // right, above
-          [q.sx + off, q.sy + 16], // right, below
-          [q.sx - off - tw, q.sy - 10], // left, above
-          [q.sx - off - tw, q.sy + 16], // left, below
-          [q.sx + off, q.sy - 24], // right, higher
-          [q.sx + off, q.sy + 30], // right, lower
-          [q.sx - off - tw, q.sy - 24], // left, higher
-          [q.sx - off - tw, q.sy + 30], // left, lower
-        ];
-        const pref = labelPref.get(q.p.name);
-        const all = slots.map((_, i) => i);
-        const tryOrder = pref === undefined ? all : [pref, ...all.filter((i) => i !== pref)];
-        let placed = -1;
-        let rect: Rect | null = null;
-        for (const i of tryOrder) {
-          const [x, y] = slots[i];
-          const r: Rect = { x: x - 2, y: y - fontPx + 1, w: tw + 4, h: lh };
-          if (r.x < 4 || r.x + r.w > w - 4 || r.y < 4 || r.y + r.h > h - 4) continue;
-          // ignore the point's own marker box when testing
-          if (taken.some((t) => hit(r, t) && !(Math.abs(t.x + t.w / 2 - q.sx) < 0.5 && Math.abs(t.y + t.h / 2 - q.sy) < 0.5))) continue;
-          placed = i;
-          rect = r;
-          break;
-        }
-        if (placed < 0 || !rect) continue; // no free slot: skip; the name is on hover and in the list below
-        labelPref.set(q.p.name, placed);
-        taken.push(rect);
-        ctx.globalAlpha = a * 0.8;
+        ctx.globalAlpha = a * 0.75;
         ctx.fillStyle = "#ededed";
-        ctx.fillText(q.p.name, slots[placed][0], slots[placed][1]);
+        ctx.fillText(q.p.name, q.sx + base * q.s + 5, q.sy + 3.5);
       }
       ctx.globalAlpha = 1;
 
