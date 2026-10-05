@@ -1,7 +1,6 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import BBox from "../ui/BBox";
 
 type Group = { label: string; items: string[] };
 type Pt = { x: number; y: number; z: number; name: string; g: number; ghost?: boolean };
@@ -163,40 +162,6 @@ export default function SkillsExplorer({ groups }: { groups: Group[] }) {
       const cur = hoverName ?? act;
       const curG = cur ? groupOf(cur) : null;
       const focusG = cl ?? curG;
-
-      // bounding cube
-      const c = 0.95;
-      const v = [];
-      for (let i = 0; i < 8; i++) v.push(project(i & 1 ? c : -c, i & 2 ? c : -c, i & 4 ? c : -c));
-      ctx.strokeStyle = "rgba(255,255,255,0.07)";
-      ctx.lineWidth = 1;
-      ctx.beginPath();
-      for (let i = 0; i < 8; i++)
-        for (const b of [1, 2, 4]) {
-          if (!(i & b)) {
-            ctx.moveTo(v[i].sx, v[i].sy);
-            ctx.lineTo(v[i | b].sx, v[i | b].sy);
-          }
-        }
-      ctx.stroke();
-      // axes
-      const o = project(0, 0, 0);
-      const axes: [number, number, number, string][] = [
-        [c, 0, 0, "d1"],
-        [0, c, 0, "d2"],
-        [0, 0, c, "d3"],
-      ];
-      ctx.font = "10px var(--font-dm-mono), monospace";
-      axes.forEach(([x, y, z, t]) => {
-        const e = project(x, y, z);
-        ctx.strokeStyle = "rgba(255,255,255,0.14)";
-        ctx.beginPath();
-        ctx.moveTo(o.sx, o.sy);
-        ctx.lineTo(e.sx, e.sy);
-        ctx.stroke();
-        ctx.fillStyle = "rgba(255,255,255,0.3)";
-        ctx.fillText(t, e.sx + 4, e.sy - 4);
-      });
 
       proj = pts.map((p) => {
         const q = project(p.x, p.y, p.z);
@@ -408,16 +373,10 @@ export default function SkillsExplorer({ groups }: { groups: Group[] }) {
         </p>
       </div>
 
-      <BBox label="skills" className="mt-8">
+      <div className="mt-8">
         <div
           ref={wrapRef}
-          className="relative h-[420px] w-full overflow-hidden border border-line sm:h-[520px] lg:h-[620px]"
-          style={{
-            backgroundImage:
-              "linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px)",
-            backgroundSize: "48px 48px",
-            backgroundPosition: "center",
-          }}
+          className="relative h-[420px] w-full overflow-hidden sm:h-[520px] lg:h-[620px]"
         >
           <canvas
             ref={canvasRef}
@@ -444,7 +403,7 @@ export default function SkillsExplorer({ groups }: { groups: Group[] }) {
             clustered by category
           </p>
         </div>
-      </BBox>
+      </div>
 
       <ul className="mt-5 flex flex-wrap gap-x-7 gap-y-2" aria-label="Clusters">
         {groups.map((g, i) => (
