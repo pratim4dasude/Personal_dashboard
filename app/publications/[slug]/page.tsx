@@ -57,9 +57,6 @@ export default async function PaperPage({ params }: PageProps<"/publications/[sl
           <a href={paper.ieeeUrl} target="_blank" rel="noopener noreferrer" className={linkClass}>
             Read on IEEE Xplore <span aria-hidden>&#8599;</span>
           </a>
-          <a href={`https://doi.org/${paper.doi}`} target="_blank" rel="noopener noreferrer" className={linkClass}>
-            DOI <span aria-hidden>&#8599;</span>
-          </a>
           <a href={paper.scholarUrl} target="_blank" rel="noopener noreferrer" className={linkClass}>
             Google Scholar <span aria-hidden>&#8599;</span>
           </a>
