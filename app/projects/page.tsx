@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 export default function ProjectsIndex() {
   return (
     <main id="main" className="mx-auto w-full max-w-[1400px] px-6 pb-24 pt-14 lg:px-10 lg:pt-20">
-      <Label index={String(projects.length).padStart(2, "0")}>Selected work</Label>
+      <Label index="03" accent>Projects</Label>
       <h1 className="font-display mt-8 max-w-5xl text-[clamp(3rem,9vw,8rem)]">
         Systems that <span className="font-emph text-accent">see</span>, retrieve and predict.
       </h1>

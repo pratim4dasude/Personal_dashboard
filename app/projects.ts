@@ -330,6 +330,172 @@ export const projects: Project[] = [
     ],
     next: ["Add prediction intervals", "Schedule retraining and drift monitoring"],
   },
+  {
+    slug: "flux-fill-controlnet-inpainting",
+    year: "2025",
+    repo: "https://github.com/pratim4dasude/pipline_flux_fill_controlnet_Inpaint",
+    title: "Flux Fill ControlNet inpainting pipeline",
+    stack: "Diffusers, FLUX Fill, ControlNet, PyTorch",
+    description:
+      "A Diffusers pipeline that adds ControlNet conditioning to FLUX Fill inpainting, merged into huggingface/diffusers as a community pipeline.",
+    tagline: "Edit inside a mask, and keep the edit faithful to depth, edges or pose.",
+    outcomeLine: "Merged into huggingface/diffusers as a community pipeline (pull request #12649).",
+    tags: ["Diffusers", "FLUX Fill", "ControlNet", "Open source"],
+    overview:
+      "FLUX Fill edits the region inside a mask, but it has no way to follow structure such as depth, edges or pose. This project adds separate ControlNet conditioning to FLUX Fill inside the Hugging Face Diffusers library, so the filled region follows the layout of the control image. It was contributed upstream as FluxFillControlNetInpaintPipeline and merged into huggingface/diffusers as a community pipeline on 19 November 2025.",
+    problem:
+      "Mask-based inpainting alone lets the model invent geometry inside the hole. For structured edits, such as replacing an object while keeping a pose or a depth layout, you want a second signal that pins the structure down. Diffusers had Flux Fill and had ControlNet, but no pipeline that combined the two.",
+    approach: [
+      {
+        title: "Start from the Flux Fill pipeline",
+        body: "Reuse the existing FLUX Fill inpainting pipeline in Diffusers as the base, so mask handling, scheduling and the transformer stay consistent with the library.",
+      },
+      {
+        title: "Add ControlNet inputs",
+        body: "Accept separate condition images (depth, canny edges, pose) alongside the image and mask, run them through a ControlNet and feed the residuals into the transformer.",
+      },
+      {
+        title: "Package it as a pipeline class",
+        body: "Expose it as FluxFillControlNetInpaintPipeline with the same call pattern as other Diffusers pipelines, plus documentation with usage examples.",
+      },
+      {
+        title: "Share sample outputs and iterate with the maintainers",
+        body: "Post sample results for review. The maintainers noted the quality was not ahead of newer editing models, suggested the community-pipeline route, and the pipeline was merged there.",
+      },
+    ],
+    architecture: {
+      summary:
+        "A Diffusers pipeline: image, mask and a control image go in; a ControlNet turns the control image into guidance for the FLUX Fill transformer.",
+      layers: [
+        { name: "Inputs", tech: "Image + mask + control image", detail: "The source image, the region to edit, and a depth, canny or pose map." },
+        { name: "Text and image encoding", tech: "Flux text encoders, VAE", detail: "Prompt embeddings and latent encoding of the masked image." },
+        { name: "ControlNet", tech: "Flux ControlNet", detail: "Converts the control image into residuals that guide each transformer block." },
+        { name: "Denoising", tech: "FLUX Fill transformer", detail: "Fills the masked region while following the ControlNet guidance." },
+        { name: "Decode", tech: "VAE", detail: "Latents decoded back to the edited image." },
+      ],
+    },
+    features: [
+      "ControlNet conditioning on top of FLUX Fill inpainting",
+      "Separate depth, canny and pose control inputs",
+      "Follows the standard Diffusers pipeline interface",
+      "Ships with a README section and usage examples",
+    ],
+    challenges: [
+      {
+        problem: "Combining two conditioning paths without breaking the base pipeline.",
+        solution: "Kept the Flux Fill code path intact and injected ControlNet residuals at the same points other Flux ControlNet pipelines use.",
+      },
+      {
+        problem: "Result quality compared with newer editing models.",
+        solution: "Treated it as a niche tool for structure-controlled edits and moved it to the community pipelines, where people can try it for their own cases.",
+      },
+    ],
+    outcomes: [
+      "Merged into huggingface/diffusers as a community pipeline on 19 November 2025",
+      "About 1,400 lines added across the pipeline file and its README",
+      "A reusable starting point for structure-controlled inpainting with Flux",
+    ],
+    learnings: [
+      "Upstream reviews push you to show outputs early, not just working code.",
+      "A pipeline can be useful to a niche even when it is not state of the art overall.",
+    ],
+    next: ["Add side-by-side outputs for depth, canny and pose to the case study", "Compare against newer editing models in a fixed test set"],
+  },
+  {
+    slug: "retina-vein-segmentation",
+    repo: "https://github.com/pratim4dasude/Retina-Vein-Segmentation-using-UNET",
+    title: "Retina vein segmentation with U-Net",
+    stack: "U-Net, PyTorch, Medical imaging",
+    description: "Pixel-wise segmentation of blood vessels in retinal images with a U-Net.",
+    tagline: "Trace the fine vessel tree in a retinal photograph, pixel by pixel.",
+    outcomeLine: "A U-Net trained to segment retinal vessels from fundus images.",
+    tags: ["Segmentation", "U-Net", "Medical imaging"],
+    overview:
+      "A U-Net model that labels every pixel of a retinal fundus image as vessel or background. Retinal vessel maps are a standard input for screening and for tracking diseases that change the vascular tree.",
+    problem:
+      "Retinal vessels are thin, branch repeatedly and fade into the background near their tips. Simple thresholding breaks on uneven lighting, and a classifier that sees only whole images cannot say where the vessels are. The task needs dense, pixel-level prediction that keeps thin structures connected.",
+    approach: [
+      {
+        title: "Frame it as pixel-wise segmentation",
+        body: "Predict a binary vessel mask for every input image, trained against annotated vessel maps.",
+      },
+      {
+        title: "Use a U-Net",
+        body: "An encoder-decoder with skip connections, which keeps fine spatial detail from early layers available to the decoder. That matters for thin vessels.",
+      },
+      {
+        title: "Evaluate overlap with the annotations",
+        body: "Compare predicted masks with annotated vessels using overlap-based measures, since plain pixel accuracy is dominated by the background.",
+      },
+    ],
+    architecture: {
+      summary: "Image in, vessel mask out, through a standard U-Net encoder-decoder.",
+      layers: [
+        { name: "Input", tech: "Fundus image", detail: "Retinal photograph, preprocessed and resized." },
+        { name: "Encoder", tech: "U-Net contracting path", detail: "Convolution and downsampling blocks that build context." },
+        { name: "Decoder", tech: "U-Net expanding path", detail: "Upsampling with skip connections that restore fine detail." },
+        { name: "Output", tech: "Per-pixel probability", detail: "Thresholded into a binary vessel mask." },
+      ],
+    },
+    features: ["Pixel-level vessel masks", "Skip connections for thin structures", "Overlap-based evaluation"],
+    challenges: [
+      {
+        problem: "Vessels are a tiny fraction of pixels, so a model can score well by predicting background.",
+        solution: "Judge the model on mask overlap with the annotations instead of pixel accuracy.",
+      },
+    ],
+    outcomes: ["A trained U-Net for retinal vessel segmentation", "A repeatable notebook workflow from images to masks"],
+    learnings: ["Class imbalance decides which metric is honest.", "Skip connections are what keep thin structures intact."],
+    next: ["Add the dataset name, split and overlap scores", "Show predicted masks next to the annotations"],
+  },
+  {
+    slug: "retail-demand-forecasting",
+    repo: "https://github.com/pratim4dasude/Retail_Demand_Forecasting",
+    title: "Retail demand forecasting on M5 Walmart data",
+    stack: "SARIMAX, Python, Time series",
+    description:
+      "Multi-level retail sales analysis and demand prediction on the M5 Walmart dataset using SARIMAX.",
+    tagline: "Forecast demand across store, department and item levels.",
+    outcomeLine: "SARIMAX forecasts of retail demand on the M5 Walmart dataset, across hierarchy levels.",
+    tags: ["Forecasting", "SARIMAX", "Time series"],
+    overview:
+      "A forecasting study on the M5 Walmart dataset. It explores sales across the store, department and item hierarchy and fits SARIMAX models, which combine seasonality with external signals, to predict future demand.",
+    problem:
+      "Retail demand is seasonal, noisy and arranged in a hierarchy: a forecast that is right for a whole store can be wrong for a single item. Planning needs forecasts at several levels that agree with the patterns in the data.",
+    approach: [
+      {
+        title: "Explore trend and seasonality by level",
+        body: "Look at sales at store, department and item level to see weekly, yearly and event-driven patterns before choosing a model.",
+      },
+      {
+        title: "Fit SARIMAX with exogenous signals",
+        body: "Use seasonal ARIMA with external regressors, such as calendar events and prices, so the model can explain demand spikes.",
+      },
+      {
+        title: "Evaluate on held-out periods",
+        body: "Forecast later periods that the model has not seen and compare against the actuals.",
+      },
+    ],
+    architecture: {
+      summary: "A notebook pipeline from raw sales files to per-level forecasts.",
+      layers: [
+        { name: "Data", tech: "M5 Walmart files", detail: "Sales, calendar and price tables joined into one series per level." },
+        { name: "Exploration", tech: "pandas", detail: "Trend, seasonality and event effects at each hierarchy level." },
+        { name: "Model", tech: "SARIMAX", detail: "Seasonal ARIMA with exogenous regressors." },
+        { name: "Forecast", tech: "Held-out evaluation", detail: "Predictions for later periods compared with actual sales." },
+      ],
+    },
+    features: ["Multi-level analysis", "Seasonal model with exogenous signals", "Held-out period evaluation"],
+    challenges: [
+      {
+        problem: "Item-level series are sparse and intermittent.",
+        solution: "Compare behaviour at higher levels first and treat sparse items separately.",
+      },
+    ],
+    outcomes: ["Forecasts at multiple hierarchy levels on the M5 data", "A documented exploration of seasonality and events"],
+    learnings: ["Aggregation level changes which model is appropriate.", "Exogenous calendar signals explain much of the spikes."],
+    next: ["Add error metrics per level", "Compare against gradient-boosted baselines"],
+  },
 ];
 
 export function getProject(slug: string) {
