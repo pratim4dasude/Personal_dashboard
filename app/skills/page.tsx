@@ -18,8 +18,8 @@ export default function SkillsPage() {
         A map of what I <span className="font-emph text-accent">actually</span> reach for.
       </h1>
       <p className="mt-6 max-w-xl text-base leading-relaxed text-muted sm:text-lg">
-        Every tool I use, embedded and clustered. Related skills sit close together. Drag to turn the space, hover a
-        point to inspect it.
+        The tools I reach for most, clustered by area. Drag to turn the space and hover a point to inspect it. The
+        full list is underneath.
       </p>
 
       <div className="mt-12 sm:mt-16">

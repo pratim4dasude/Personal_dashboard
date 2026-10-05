@@ -317,7 +317,7 @@ export default function Home() {
                 <p className="text-xl font-light tracking-tight transition-transform duration-500 group-hover:translate-x-1.5 sm:col-span-4 sm:text-2xl">
                   {g.label}
                 </p>
-                <p className="font-mono text-xs leading-7 text-muted sm:col-span-8">{g.items.join(", ")}</p>
+                <p className="font-mono text-xs leading-7 text-muted sm:col-span-8">{g.plot.join(", ")}</p>
               </Link>
             </li>
           ))}

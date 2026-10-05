@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
-type Group = { label: string; items: string[] };
+type Group = { label: string; items: string[]; plot?: string[] };
 type Pt = { x: number; y: number; z: number; name: string; g: number; ghost?: boolean };
 type Shape = "circle" | "square" | "diamond" | "triangle";
 
@@ -35,7 +35,7 @@ function buildPoints(groups: Group[]): Pt[] {
   const pts: Pt[] = [];
   groups.forEach((g, gi) => {
     const c = centers[gi % centers.length];
-    g.items.forEach((name) => {
+    (g.plot ?? g.items).forEach((name) => {
       pts.push({
         x: c[0] + gauss(r) * 0.2,
         y: c[1] + gauss(r) * 0.2,
