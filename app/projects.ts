@@ -152,6 +152,7 @@ const allProjects: Project[] = [
   },
   {
     slug: "echoseek",
+    repo: "https://github.com/pratim4dasude/EchoSeek",
     image: {
       src: "/projects/echoseek.jpg",
       alt: "The EchoSeek search prototype with the query formal mens wear",
@@ -233,6 +234,7 @@ const allProjects: Project[] = [
   },
   {
     slug: "white-balance-regression",
+    repo: "https://github.com/pratim4dasude/White_Balance",
     image: {
       src: "/projects/white-balance-regression.jpg",
       alt: "Histograms of absolute error for color temperature and tint",
